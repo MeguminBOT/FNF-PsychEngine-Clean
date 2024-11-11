@@ -5,11 +5,8 @@ import objects.Character;
 import objects.Bar;
 import flixel.addons.display.shapes.FlxShapeCircle;
 
-import states.stages.StageWeek1 as BackgroundStage;
-
 class NoteOffsetState extends MusicBeatState
 {
-	var stageDirectory:String = 'week1';
 	var boyfriend:Character;
 	var gf:Character;
 
@@ -56,10 +53,6 @@ class NoteOffsetState extends MusicBeatState
 
 		persistentUpdate = true;
 		FlxG.sound.pause();
-
-		// Stage
-		Paths.setCurrentLevel(stageDirectory);
-		new BackgroundStage();
 
 		// Characters
 		gf = new Character(400, 130, 'gf');

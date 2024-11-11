@@ -66,8 +66,6 @@ class StageData {
 		var stage:String = '';
 		if(SONG.stage != null)
 			stage = SONG.stage;
-		else if(Song.loadedSongName != null)
-			stage = vanillaSongStage(Paths.formatToSongPath(Song.loadedSongName));
 		else
 			stage = 'stage';
 
@@ -88,30 +86,6 @@ class StageData {
 			#end
 		}
 		return dummy();
-	}
-
-	public static function vanillaSongStage(songName):String
-	{
-		switch (songName)
-		{
-			case 'spookeez' | 'south' | 'monster':
-				return 'spooky';
-			case 'pico' | 'blammed' | 'philly' | 'philly-nice':
-				return 'philly';
-			case 'milf' | 'satin-panties' | 'high':
-				return 'limo';
-			case 'cocoa' | 'eggnog':
-				return 'mall';
-			case 'winter-horrorland':
-				return 'mallEvil';
-			case 'senpai' | 'roses':
-				return 'school';
-			case 'thorns':
-				return 'schoolEvil';
-			case 'ugh' | 'guns' | 'stress':
-				return 'tank';
-		}
-		return 'stage';
 	}
 
 	public static var reservedNames:Array<String> = ['gf', 'gfGroup', 'dad', 'dadGroup', 'boyfriend', 'boyfriendGroup']; //blocks these names from being used on stage editor's name input text
