@@ -1,0 +1,2736 @@
+{
+	"song": {
+		"events": [
+			[
+				4781.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Security guard!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				6187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Where are you ?!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				7687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"You ain't touchin' my buns",
+						"4c506d"
+					]
+				]
+			],
+			[
+				9562.5,
+				[
+					[
+						"zoom",
+						"2",
+						"0.01"
+					],
+					[
+						"zoom",
+						"0.8",
+						"3"
+					]
+				]
+			],
+			[
+				9656.25,
+				[
+					[
+						"Toggle Subtitles",
+						"hun",
+						"4c506d"
+					],
+					[
+						"fadeout",
+						"black",
+						"2"
+					]
+				]
+			],
+			[
+				10500,
+				[
+					[
+						"Toggle Subtitles",
+						"Oh god dammit",
+						"4c506d"
+					]
+				]
+			],
+			[
+				11250,
+				[
+					[
+						"fadeout",
+						"white",
+						"0.5"
+					],
+					[
+						"fadeout",
+						"black",
+						"1"
+					]
+				]
+			],
+			[
+				12000,
+				[
+					[
+						"Toggle Subtitles",
+						"",
+						""
+					]
+				]
+			],
+			[
+				17250,
+				[
+					[
+						"Toggle Subtitles",
+						"Well shit",
+						"4c506d"
+					],
+					[
+						"Play Animation",
+						"singUP",
+						"BF"
+					]
+				]
+			],
+			[
+				17625,
+				[
+					[
+						"Play Animation",
+						"singDOWN",
+						"BF"
+					]
+				]
+			],
+			[
+				18000,
+				[
+					[
+						"Toggle Subtitles",
+						"",
+						""
+					],
+					[
+						"Song Credits",
+						"",
+						""
+					]
+				]
+			],
+			[
+				24000,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				24750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				26250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				27750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				29250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				30750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				32250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				33750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				35250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				36750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				38250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				39750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				41250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				42750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				44250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				45750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				47250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				48187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"W-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				48281.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Wh-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				48375,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				48750,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm done",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				48773.4375,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				49031.25,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm done with",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				49312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm done with you",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				49500,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm done with you.",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				49687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm done with you..",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				49875,
+				[
+					[
+						"Toggle Subtitles",
+						"When I'm done with you...",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				50062.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Y-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				50156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Yo",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				50250,
+				[
+					[
+						"Toggle Subtitles",
+						"Your face",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				50273.4375,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				50437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Your face will",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				50625,
+				[
+					[
+						"Toggle Subtitles",
+						"Your face will look",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				50812.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Your face will look like",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				51187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"W-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				51281.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Will",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				51375,
+				[
+					[
+						"Toggle Subtitles",
+						"Will look",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				51562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Will look like",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				51750,
+				[
+					[
+						"Toggle Subtitles",
+						"MASHED",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				51773.4375,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				52125,
+				[
+					[
+						"Toggle Subtitles",
+						"MASHED P-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				52218.75,
+				[
+					[
+						"Toggle Subtitles",
+						"MASHED PO-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				52312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"MASHED POTA-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				52687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"MASHED POTATOES",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				53062.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Y-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				53156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Ye-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				53250,
+				[
+					[
+						"Toggle Subtitles",
+						"Yeah",
+						"4c506d"
+					]
+				]
+			],
+			[
+				53265.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				53437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Yeah whatever",
+						"4c506d"
+					]
+				]
+			],
+			[
+				54000,
+				[
+					[
+						"Toggle Subtitles",
+						"Yeah whatever man",
+						"4c506d"
+					]
+				]
+			],
+			[
+				54750,
+				[
+					[
+						"Toggle Subtitles",
+						"O-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				54765.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				54843.75,
+				[
+					[
+						"Toggle Subtitles",
+						"Oh-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				54937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				55125,
+				[
+					[
+						"Toggle Subtitles",
+						"Kay",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				55312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"A-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				55406.25,
+				[
+					[
+						"Toggle Subtitles",
+						"AA-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				55500,
+				[
+					[
+						"Toggle Subtitles",
+						"I'm",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				55687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"I'm gonna",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				55875,
+				[
+					[
+						"Toggle Subtitles",
+						"I'm gonna go",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				56062.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Fa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				56156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Fafa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				56250,
+				[
+					[
+						"Toggle Subtitles",
+						"Find",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				56437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Find that",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				56625,
+				[
+					[
+						"Toggle Subtitles",
+						"Find that child!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				57000,
+				[
+					[
+						"Toggle Subtitles",
+						"Fa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				57093.75,
+				[
+					[
+						"Toggle Subtitles",
+						"Fafa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				57187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Find",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				57562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Fa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				57656.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Fafa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				57750,
+				[
+					[
+						"Toggle Subtitles",
+						"Find",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				58125,
+				[
+					[
+						"Toggle Subtitles",
+						"Fa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				58218.75,
+				[
+					[
+						"Toggle Subtitles",
+						"Fafa-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				58312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Find",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				58500,
+				[
+					[
+						"Toggle Subtitles",
+						"Find that",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				58687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Find that child!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59250,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT THEN",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59265.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				59343.75,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT THEN I'M",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT THEN I'M GO",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59531.25,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT THEN I'M GONNA",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59625,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT THEN I'M GONNA KILL",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				59718.75,
+				[
+					[
+						"Toggle Subtitles",
+						"BUT THEN I'M GONNA KILL YOU",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				60000,
+				[
+					[
+						"Toggle Subtitles",
+						"O-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				60093.75,
+				[
+					[
+						"Toggle Subtitles",
+						"Oo-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				60187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Ooo-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				60281.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Oh",
+						"4c506d"
+					]
+				]
+			],
+			[
+				60562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay",
+						"4c506d"
+					]
+				]
+			],
+			[
+				60750,
+				[
+					[
+						"Toggle Subtitles",
+						"BYE!",
+						"4c506d"
+					]
+				]
+			],
+			[
+				60773.4375,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				60937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"O-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				61031.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Ooh",
+						"4c506d"
+					]
+				]
+			],
+			[
+				61312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay",
+						"4c506d"
+					]
+				]
+			],
+			[
+				61500,
+				[
+					[
+						"Toggle Subtitles",
+						"BYE!",
+						"4c506d"
+					]
+				]
+			],
+			[
+				62062.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Ha-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				62156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Haha",
+						"4c506d"
+					]
+				]
+			],
+			[
+				62250,
+				[
+					[
+						"Toggle Subtitles",
+						"Hahaha",
+						"4c506d"
+					]
+				]
+			],
+			[
+				62265.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				62437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Happy",
+						"4c506d"
+					]
+				]
+			],
+			[
+				62625,
+				[
+					[
+						"Toggle Subtitles",
+						"Happy travels!",
+						"4c506d"
+					]
+				]
+			],
+			[
+				63187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"O-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				63281.25,
+				[
+					[
+						"Toggle Subtitles",
+						"Oo-",
+						"4c506d"
+					]
+				]
+			],
+			[
+				63375,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay",
+						"4c506d"
+					]
+				]
+			],
+			[
+				63562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay let's",
+						"4c506d"
+					]
+				]
+			],
+			[
+				63750,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay let's see",
+						"4c506d"
+					]
+				]
+			],
+			[
+				63773.4375,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				63937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Okay let's see here",
+						"4c506d"
+					]
+				]
+			],
+			[
+				64500,
+				[
+					[
+						"Toggle Subtitles",
+						"NYEAH",
+						"4c506d"
+					],
+					[
+						"Screen Shake",
+						"0.2, 0.02",
+						"0.2, 0.01"
+					],
+					[
+						"zoom",
+						"1",
+						"0.2w"
+					]
+				]
+			],
+			[
+				64511.71875,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				64875,
+				[
+					[
+						"Toggle Subtitles",
+						"THERE",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				64968.75,
+				[
+					[
+						"Toggle Subtitles",
+						"THERE WAS",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				65156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"THERE WAS NO",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				65250,
+				[
+					[
+						"Toggle Subtitles",
+						"THERE WAS NO CHILD",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				65437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"THERE WAS NO CHILD IN",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				65625,
+				[
+					[
+						"Toggle Subtitles",
+						"THERE WAS NO CHILD IN THERE!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				66375,
+				[
+					[
+						"Toggle Subtitles",
+						"I",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				66468.75,
+				[
+					[
+						"Toggle Subtitles",
+						"I know",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				66562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				66750,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're messing",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				66765.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				66937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're messing with",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				67125,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're messing with me",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				67218.75,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're messing with me.",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				67312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're messing with me..",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				67406.25,
+				[
+					[
+						"Toggle Subtitles",
+						"I know you're messing with me...",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				67500,
+				[
+					[
+						"Toggle Subtitles",
+						"WHERE ARE YOU HIDING IT?!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				68250,
+				[
+					[
+						"Toggle Subtitles",
+						"DUDE!",
+						"4c506d"
+					]
+				]
+			],
+			[
+				68265.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				68625,
+				[
+					[
+						"Toggle Subtitles",
+						"I",
+						"4c506d"
+					]
+				]
+			],
+			[
+				68718.75,
+				[
+					[
+						"Toggle Subtitles",
+						"I don't",
+						"4c506d"
+					]
+				]
+			],
+			[
+				69000,
+				[
+					[
+						"Toggle Subtitles",
+						"I don't know!",
+						"4c506d"
+					]
+				]
+			],
+			[
+				69750,
+				[
+					[
+						"Toggle Subtitles",
+						"uh...",
+						"4c506d"
+					]
+				]
+			],
+			[
+				69765.625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				70500,
+				[
+					[
+						"Toggle Subtitles",
+						"Freddy's behind you",
+						"4c506d"
+					]
+				]
+			],
+			[
+				71250,
+				[
+					[
+						"Toggle Subtitles",
+						"Freddy ?",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				71625,
+				[
+					[
+						"Toggle Subtitles",
+						"Hello!",
+						"808041"
+					],
+					[
+						"zoom",
+						"2",
+						"0.5"
+					],
+					[
+						"fadein",
+						"black",
+						"0.4"
+					],
+					[
+						"Change Character",
+						"dad",
+						"5amspringtrapfreddy"
+					]
+				]
+			],
+			[
+				72000,
+				[
+					[
+						"Toggle Subtitles",
+						"",
+						""
+					],
+					[
+						"fadeout",
+						"black",
+						"20"
+					],
+					[
+						"bop",
+						"0.04",
+						"0.025"
+					]
+				]
+			],
+			[
+				83250,
+				[
+					[
+						"fadeout",
+						"black",
+						"5"
+					]
+				]
+			],
+			[
+				83625,
+				[
+					[
+						"fadeout",
+						"black",
+						"1"
+					]
+				]
+			],
+			[
+				84000,
+				[
+					[
+						"fadein",
+						"white",
+						"0.01"
+					],
+					[
+						"bop",
+						"",
+						""
+					]
+				]
+			],
+			[
+				84093.75,
+				[
+					[
+						"fadeout",
+						"white",
+						"1"
+					]
+				]
+			],
+			[
+				84750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				86250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				87750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				89250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				90750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				92250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				93750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				95250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				95625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				96000,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				96750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				98250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				99750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				101250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				102750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				103500,
+				[
+					[
+						"zoom",
+						"1.5",
+						"4.5"
+					]
+				]
+			],
+			[
+				104250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				105750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				108000,
+				[
+					[
+						"zoom",
+						"0.8",
+						"0.2"
+					]
+				]
+			],
+			[
+				108750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				110250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				111750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				113250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				114750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				116250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				117750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				119250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				120750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				122250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				123750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				125250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				126750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				128250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				129750,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				131250,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				131625,
+				[
+					[
+						"Add Camera Zoom",
+						"0.06",
+						"0.04"
+					]
+				]
+			],
+			[
+				132000,
+				[
+					[
+						"Toggle Subtitles",
+						"Freddy",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				132375,
+				[
+					[
+						"Toggle Subtitles",
+						"Don't",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				132750,
+				[
+					[
+						"Toggle Subtitles",
+						"Don't talk",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				132937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Don't talk to",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				133125,
+				[
+					[
+						"Toggle Subtitles",
+						"Don't talk to this",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				133312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"Don't talk to this guy!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				133687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"He's",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				133781.25,
+				[
+					[
+						"Toggle Subtitles",
+						"He's an",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				134062.5,
+				[
+					[
+						"Toggle Subtitles",
+						"He's an ASSHOLE!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				134437.5,
+				[
+					[
+						"Toggle Subtitles",
+						"H-",
+						"808041"
+					]
+				]
+			],
+			[
+				134531.25,
+				[
+					[
+						"Toggle Subtitles",
+						"HA-",
+						"808041"
+					]
+				]
+			],
+			[
+				134625,
+				[
+					[
+						"Toggle Subtitles",
+						"AHH!",
+						"808041"
+					]
+				]
+			],
+			[
+				134814.84375,
+				[
+					[
+						"Toggle Subtitles",
+						"AHH! PROFANITY!",
+						"808041"
+					]
+				]
+			],
+			[
+				135562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"He's",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				135750,
+				[
+					[
+						"Toggle Subtitles",
+						"He's hiding",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				135937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"He's hiding a",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				136125,
+				[
+					[
+						"Toggle Subtitles",
+						"He's hiding a child",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				136500,
+				[
+					[
+						"Toggle Subtitles",
+						"He's hiding a child somewhere",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				136875,
+				[
+					[
+						"Toggle Subtitles",
+						"And he won't",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				137250,
+				[
+					[
+						"Toggle Subtitles",
+						"And he won't show me",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				137625,
+				[
+					[
+						"Toggle Subtitles",
+						"And he won't show me where!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				138000,
+				[
+					[
+						"Toggle Subtitles",
+						"NO!",
+						"808041"
+					]
+				]
+			],
+			[
+				138375,
+				[
+					[
+						"Toggle Subtitles",
+						"YES!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				139125,
+				[
+					[
+						"Toggle Subtitles",
+						"I'll do my best ma'am!",
+						"808041"
+					]
+				]
+			],
+			[
+				140625,
+				[
+					[
+						"Toggle Subtitles",
+						"THAT'S",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				140812.5,
+				[
+					[
+						"Toggle Subtitles",
+						"THAT'S IT",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				141000,
+				[
+					[
+						"Toggle Subtitles",
+						"THAT'S IT FU",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				141187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"THAT'S IT FUCKER",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				141375,
+				[
+					[
+						"Toggle Subtitles",
+						"I'M",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				141562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"I'M COMING",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				141750,
+				[
+					[
+						"Toggle Subtitles",
+						"I'M COMING IN THERE!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				141937.5,
+				[
+					[
+						"zoom",
+						"2",
+						"1"
+					],
+					[
+						"fadein",
+						"black",
+						"1"
+					]
+				]
+			],
+			[
+				142125,
+				[
+					[
+						"Toggle Subtitles",
+						"o",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142218.75,
+				[
+					[
+						"Toggle Subtitles",
+						"oo",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"ooO",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142406.25,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOO",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142500,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOA",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142593.75,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAA",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142687.5,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAAA",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142781.25,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAAAA",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142875,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAAAAA",
+						"4c506d"
+					]
+				]
+			],
+			[
+				142968.75,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAAAAAA",
+						"4c506d"
+					]
+				]
+			],
+			[
+				143062.5,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAAAAAAH",
+						"4c506d"
+					]
+				]
+			],
+			[
+				143156.25,
+				[
+					[
+						"Toggle Subtitles",
+						"ooOOAAAAAAHH",
+						"4c506d"
+					]
+				]
+			],
+			[
+				143250,
+				[
+					[
+						"Toggle Subtitles",
+						"HAVE AT THEE!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144187.5,
+				[
+					[
+						"Toggle Subtitles",
+						"AH",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144281.25,
+				[
+					[
+						"Toggle Subtitles",
+						"AHH",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144375,
+				[
+					[
+						"Toggle Subtitles",
+						"AHHH",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144468.75,
+				[
+					[
+						"Toggle Subtitles",
+						"AHHHH",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144562.5,
+				[
+					[
+						"Toggle Subtitles",
+						"AHHHHH",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144656.25,
+				[
+					[
+						"Toggle Subtitles",
+						"AHHHHHh",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144750,
+				[
+					[
+						"Toggle Subtitles",
+						"AHHHHHhh",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144843.75,
+				[
+					[
+						"Toggle Subtitles",
+						"AHHHHHhh-",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				144937.5,
+				[
+					[
+						"Toggle Subtitles",
+						"FUCKING-",
+						"9f9e4b"
+					],
+					[
+						"Change Character",
+						"dad",
+						"5amspringtrap2"
+					],
+					[
+						"Change Character",
+						"bf",
+						"securityguy2"
+					],
+					[
+						"Change Character",
+						"gf",
+						"5amfoxy"
+					],
+					[
+						"",
+						"",
+						""
+					]
+				]
+			],
+			[
+				145312.5,
+				[
+					[
+						"Toggle Subtitles",
+						"FUCKING KNEES!!!",
+						"9f9e4b"
+					],
+					[
+						"fadeout",
+						"black",
+						"0.5"
+					]
+				]
+			],
+			[
+				145875,
+				[
+					[
+						"Toggle Subtitles",
+						"GET",
+						"4c506d"
+					]
+				]
+			],
+			[
+				146250,
+				[
+					[
+						"Toggle Subtitles",
+						"GET CROWBARRED",
+						"4c506d"
+					]
+				]
+			],
+			[
+				147000,
+				[
+					[
+						"Toggle Subtitles",
+						"BITCH!",
+						"4c506d"
+					],
+					[
+						"bop",
+						"0.04",
+						"0.02"
+					]
+				]
+			],
+			[
+				148500,
+				[
+					[
+						"Toggle Subtitles",
+						"",
+						""
+					]
+				]
+			],
+			[
+				158250,
+				[
+					[
+						"zoom",
+						"1.5",
+						"0.1"
+					]
+				]
+			],
+			[
+				158343.75,
+				[
+					[
+						"zoom",
+						"1",
+						"0.5"
+					]
+				]
+			],
+			[
+				158625,
+				[
+					[
+						"zoom",
+						"1.5",
+						"0.1"
+					]
+				]
+			],
+			[
+				158718.75,
+				[
+					[
+						"zoom",
+						"1",
+						"0.5"
+					]
+				]
+			],
+			[
+				182250,
+				[
+					[
+						"zoom",
+						"1.5",
+						"0.1"
+					]
+				]
+			],
+			[
+				182343.75,
+				[
+					[
+						"zoom",
+						"1",
+						"0.5"
+					]
+				]
+			],
+			[
+				182625,
+				[
+					[
+						"zoom",
+						"1.5",
+						"0.1"
+					]
+				]
+			],
+			[
+				182718.75,
+				[
+					[
+						"zoom",
+						"1",
+						"0.5"
+					]
+				]
+			],
+			[
+				195000,
+				[
+					[
+						"zoom",
+						"1",
+						"0.1"
+					]
+				]
+			],
+			[
+				198000,
+				[
+					[
+						"bop",
+						"",
+						""
+					],
+					[
+						"fadein",
+						"black",
+						"0.5"
+					],
+					[
+						"zoom",
+						"2",
+						"1"
+					]
+				]
+			],
+			[
+				198250,
+				[
+					[
+						"Toggle Subtitles",
+						"Hey springtrap...",
+						"4c506d"
+					]
+				]
+			],
+			[
+				199406.25,
+				[
+					[
+						"Toggle Subtitles",
+						"WHAT?!",
+						"9f9e4b"
+					]
+				]
+			],
+			[
+				200250,
+				[
+					[
+						"Toggle Subtitles",
+						"Do you hear that ?",
+						"4c506d"
+					]
+				]
+			],
+			[
+				201875,
+				[
+					[
+						"Toggle Subtitles",
+						"",
+						""
+					]
+				]
+			]
+		]
+	}
+}
