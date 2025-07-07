@@ -126,6 +126,7 @@ class LoadingState extends MusicBeatState
 				hscript = null;
 			}
 		}
+		#end
 		// BASE GAME LOADING SCREEN
 		var bg = new FlxSprite().makeGraphic(1, 1, 0xFFCAFF4D);
 		bg.scale.set(FlxG.width, FlxG.height);
@@ -487,9 +488,6 @@ class LoadingState extends MusicBeatState
 			return true;
 		}, isIntrusive)
 		.then((_) -> new Future<Bool>(() -> {
-			if (song.stage == null || song.stage.length < 1)
-				song.stage = StageData.vanillaSongStage(folder);
-
 			var stageData:StageFile = StageData.getStageFile(song.stage);
 			if (stageData != null)
 			{

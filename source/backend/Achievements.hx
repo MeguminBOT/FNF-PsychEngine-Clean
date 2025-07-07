@@ -47,6 +47,17 @@ class Achievements {
 	public static var achievements:Map<String, Achievement> = new Map<String, Achievement>();
 	public static var variables:Map<String, Float> = [];
 	public static var achievementsUnlocked:Array<String> = [];
+	private static var _firstLoad:Bool = true;
+
+	public static function get(name:String):Achievement
+		return achievements.get(name);
+	public static function exists(name:String):Bool
+		return achievements.exists(name);
+
+	public static function load():Void
+	{
+		if(!_firstLoad) return;
+
 		if(_originalLength < 0) init();
 
 		if(FlxG.save.data != null) {
