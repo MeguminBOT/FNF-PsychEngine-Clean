@@ -266,6 +266,12 @@ class PlayState extends MusicBeatState
 
 	private static var _lastLoadedModDirectory:String = '';
 	public static var nextReloadAll:Bool = false;
+
+
+	/*-------- VS FNAF 3 Stuff --------*/
+	public static var isCodeInput:Bool = false;
+	/*---------------------------------*/
+
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);

@@ -3,15 +3,22 @@ package states;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
+import backend.SongUnlock;
 
 import objects.HealthIcon;
 import objects.MusicPlayer;
+
+import states.editors.ChartingState;
 
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
 
 import flixel.math.FlxMath;
 import flixel.util.FlxDestroyUtil;
+import flixel.ui.FlxButton;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.input.keyboard.FlxKey;
 
 import openfl.utils.Assets;
 
@@ -23,47 +30,83 @@ class FreeplayState extends MusicBeatState
 
 	var selector:FlxText;
 	private static var curSelected:Int = 0;
-	var lerpSelected:Float = 0;
 	var curDifficulty:Int = -1;
 	private static var lastDifficultyName:String = Difficulty.getDefault();
 
-	var scoreBG:FlxSprite;
-	var scoreText:FlxText;
-	var diffText:FlxText;
 	var lerpScore:Int = 0;
 	var lerpRating:Float = 0;
 	var intendedScore:Int = 0;
 	var intendedRating:Float = 0;
 
-	private var grpSongs:FlxTypedGroup<Alphabet>;
-	private var curPlaying:Bool = false;
+	/*-------- VS FNAF 3 Custom Freeplay Menu --------*/
+	// Development flag - set to true to unlock all songs during development
+	var developmentMode:Bool = true;
+	
+	// Songlist
+	var songList:Array<String> = ['taken-apart', 'retribution', 'fear-forever', 'everlasting', 'brain-damage', 'party-room', 'totally-real', 'last-hour', 'waffles', 'leantrap', 'endo-revengo', 'misconception', 'out-of-bounds', 'until-next-time'];
+	
+	// Filepath shortcuts
+	var spritePath:String = 'menus/freeplayMenu/';
+	var songSprites:String = 'menus/freeplayMenu/songs/';
 
-	private var iconArray:Array<HealthIcon> = [];
+	// UI Text Stuff
+	var textBG:FlxSprite;
+	var scoreText:FlxText;
+	var ratingSplit:Array<String>;
 
-	var bg:FlxSprite;
-	var intendedColor:Int;
+	// Song Button stuff
+	var btnGroup:FlxTypedGroup<FlxButton>;
+	var outlineGroup:FlxSpriteGroup;
+	var btnGroups:Array<FlxTypedGroup<FlxButton>> = [];
+	var outlineGroups:Array<FlxSpriteGroup> = [];
 
-	var missingTextBG:FlxSprite;
-	var missingText:FlxText;
+	// Song Button properties 
+	// DO NOT CHANGE THESE VARIABLES THEY'RE HANDLED IN A FUNCTION LATER ON.
+	var btnWidth:Float = 0; // Width of each button.
+	var btnHeight:Float = 0; // Height of each button.
+	var outlineWidth:Float = 0; // Width of the outline image.
+	var outlineHeight:Float = 0; // Height of the outline image. 
+	var btnX:Float = 0; // X position of the button row.
+	var btnY:Float = 0; // Y position of the button row.
+	var outlineX:Float = 0; // X position of the outline.
+	var outlineY:Float = 0; // Y position of the outline.
+	var btnSpacing:Int = 0; // Space between each button.
 
-	var bottomString:String;
-	var bottomText:FlxText;
-	var bottomBG:FlxSprite;
+	// Secret Code properties 395248
+	var secretCode:Array<Int> = [3, 9, 5, 2, 4, 8];
+	var userInput:Array<Int> = [];
 
-	var player:MusicPlayer;
+	// Cameras
+	// private var camMenu:FlxCamera;
+	// private var camAchievement:FlxCamera;
+
+	// Modifiers
+	var modifierButton:FlxButton;
+
+	// Difficulty
+	var difficultyButton:FlxButton;
+	var difficultyTablet:FlxSprite;
+	var isDiffTablet:Bool = false;
+	var diffNormal:FlxText;
+	var diffEasy:FlxText;
+
+	// Difficulty
+	var awardsButton:FlxButton;
 
 	override function create()
 	{
-		//Paths.clearStoredMemory();
-		//Paths.clearUnusedMemory();
-		
+		FlxG.mouse.visible = true;
+
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+	
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
 
-		#if DISCORD_ALLOWED
+		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("Freeplay Menu", null);
 		#end
 
 		if(WeekData.weeksList.length < 1)
@@ -103,93 +146,440 @@ class FreeplayState extends MusicBeatState
 		}
 		Mods.loadTopMod();
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		add(bg);
-		bg.screenCenter();
+        var bg = new FlxSprite().loadGraphic(Paths.image('menus/bg'));
+        bg.antialiasing = ClientPrefs.data.antialiasing;
+        add(bg);
+        bg.screenCenter();
 
-		grpSongs = new FlxTypedGroup<Alphabet>();
-		add(grpSongs);
-
-		for (i in 0...songs.length)
-		{
-			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
-			songText.targetY = i;
-			grpSongs.add(songText);
-
-			songText.scaleX = Math.min(1, 980 / songText.width);
-			songText.snapToPosition();
-
-			Mods.currentModDirectory = songs[i].folder;
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
-			icon.sprTracker = songText;
-
-			
-			// too laggy with a lot of songs, so i had to recode the logic for it
-			songText.visible = songText.active = songText.isMenuItem = false;
-			icon.visible = icon.active = false;
-
-			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
-			add(icon);
-
-			// songText.x += 40;
-			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
-			// songText.screenCenter(X);
-		}
 		WeekData.setDirectoryFromWeek();
 
-		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
-		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
-		scoreBG.alpha = 0.6;
-		add(scoreBG);
-
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
-		diffText.font = scoreText.font;
-		add(diffText);
-
-		add(scoreText);
-
-
-		missingTextBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		missingTextBG.alpha = 0.6;
-		missingTextBG.visible = false;
-		add(missingTextBG);
-		
-		missingText = new FlxText(50, 0, FlxG.width - 100, '', 24);
-		missingText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		missingText.scrollFactor.set();
-		missingText.visible = false;
-		add(missingText);
-
-		if(curSelected >= songs.length) curSelected = 0;
-		bg.color = songs[curSelected].color;
-		intendedColor = bg.color;
-		lerpSelected = curSelected;
-
 		curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(lastDifficultyName)));
-
-		bottomBG = new FlxSprite(0, FlxG.height - 26).makeGraphic(FlxG.width, 26, 0xFF000000);
-		bottomBG.alpha = 0.6;
-		add(bottomBG);
-
-		var leText:String = Language.getPhrase("freeplay_tip", "Press SPACE to listen to the Song / Press CTRL to open the Gameplay Changers Menu / Press RESET to Reset your Score and Accuracy.");
-		bottomString = leText;
-		var size:Int = 16;
-		bottomText = new FlxText(bottomBG.x, bottomBG.y + 4, FlxG.width, leText, size);
-		bottomText.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, CENTER);
-		bottomText.scrollFactor.set();
-		add(bottomText);
-		
-		player = new MusicPlayer(this);
-		add(player);
 		
 		changeSelection();
-		updateTexts();
+
+		/* Call our separated function for creating song buttons */
+		btnGroups.push(createGroup(songList));
+
+		/* Call our separated function for creating text objects */
+		createTextStuff();
+
+		/* Call our separated function for creating various other menu buttons */
+		createMenuButtons();
+
+		/* Call our separated function for creating the difficulty selection menu */
+		createDifficultyMenu();
+
 		super.create();
 	}
+
+	/*--------------- Start of FNAF 3 Menu Stuff --------------- */
+	// function cameraSetup()
+	// {
+	// 	camMenu = new FlxCamera();
+	// 	camAchievement = new FlxCamera();
+	// 	camAchievement.bgColor.alpha = 0;
+
+	// 	camMenu.antialiasing = ClientPrefs.hudAntialiasing;
+	// 	camAchievement.antialiasing = ClientPrefs.hudAntialiasing;
+	// 	FlxG.cameras.reset(camMenu);
+	// 	FlxG.cameras.add(camAchievement, false);
+	// 	FlxG.cameras.setDefaultDrawTarget(camMenu, true);
+	// }
+
+	function createTextStuff() 
+	{
+		// Create a transparent background for the text objects.
+		textBG = new FlxSprite(0, 0).makeGraphic(FlxG.width, 100, 0xFF000000);
+		textBG.y = FlxG.height * 0.86;
+		textBG.screenCenter(X);
+		textBG.scrollFactor.set();
+		textBG.alpha = 0.5;
+		add(textBG);
+
+		// Create text showing the players highest score.
+		scoreText = new FlxText(textBG.x + 18, textBG.y + 6, FlxG.width, "", 32);
+		scoreText.setFormat(Paths.font("5Computers-In-Love.ttf"), 16, FlxColor.WHITE, CENTER);
+		add(scoreText);
+	}
+
+	function createMenuButtons()
+	{
+		modifierButton = new FlxButton(0, 650, "", openModifiers.bind());
+		modifierButton.loadGraphic(Paths.image(spritePath + 'modifierButton'), true, 360, 60);
+		add(modifierButton);
+
+		awardsButton = new FlxButton(500, 650, "", openAwards.bind());
+		awardsButton.loadGraphic(Paths.image(spritePath + 'awardsButton'), true, 240, 60);
+		add(awardsButton);
+
+		difficultyButton = new FlxButton(820, 650, "", difficultySelector.bind());
+		difficultyButton.loadGraphic(Paths.image(spritePath + 'difficultyButton'), true, 400, 60);
+		add(difficultyButton);
+	}
+
+	// PLEASE DON'T LOOK AT ME I'M UGLY
+	function createDifficultyMenu()
+	{
+		difficultyTablet = new FlxSprite();
+		difficultyTablet.loadGraphic(Paths.image(spritePath + 'tablet_options'));
+		difficultyTablet.frames = Paths.getSparrowAtlas(spritePath + 'tablet_options');
+		difficultyTablet.antialiasing = ClientPrefs.data.antialiasing;
+		difficultyTablet.x = 800;
+		difficultyTablet.y = 340;
+		difficultyTablet.scale.x = 0.7;
+		difficultyTablet.scale.y = 0.7;
+		difficultyTablet.updateHitbox();
+		difficultyTablet.animation.addByPrefix('Anim In', 'Anim In', 48, false);
+		difficultyTablet.animation.addByPrefix('Anim Out', 'Anim Out', 48, false);
+		difficultyTablet.animation.addByPrefix('Anim Opened', 'Anim Opened', 48, true);
+		add(difficultyTablet);
+
+		diffNormal = new FlxText(difficultyTablet.x + 72, difficultyTablet.y + 36, 0, '', 16, true);
+		diffNormal.setFormat(Paths.font('stalker1.ttf'), 64, FlxColor.WHITE, FlxTextBorderStyle.OUTLINE, FlxColor.GREEN, true);
+		diffNormal.borderSize = 2;
+		diffNormal.visible = false;
+		add(diffNormal);
+
+		diffEasy = new FlxText(difficultyTablet.x + 108, diffNormal.y + 64, 0, '', 16, true);
+		diffEasy.setFormat(Paths.font('stalker1.ttf'), 64, FlxColor.WHITE, FlxTextBorderStyle.OUTLINE, FlxColor.GREEN, true);
+		diffEasy.borderSize = 2;
+		diffEasy.visible = false;
+		add(diffEasy);
+	}
+
+	public function createGroup(songList:Array<String>):FlxTypedGroup<FlxButton> 
+	{
+		// Initialize groups.
+		btnGroup = new FlxTypedGroup<FlxButton>();
+		outlineGroup = new FlxSpriteGroup();
+	
+		for (i in 0...songList.length) {
+			// Sets a bigger or smaller size of the buttons depending on the index range. 
+			if (i >= 0 && i <= 3) { // Row 1.
+				btnWidth = 185;
+				btnHeight = 185;
+				outlineWidth = 237;
+				outlineHeight = 237;
+				btnSpacing = 25;
+			} else { // Row 2 and Row 3.
+				btnWidth = 148;
+				btnHeight = 148;
+				outlineWidth = 189;
+				outlineHeight = 189;
+				btnSpacing = 25;
+			}
+	
+			// Position configuration depending on the index range.
+			if (i >= 0 && i <= 3) { // Row 1
+				btnX = 230 + (btnWidth + btnSpacing) * i;
+				btnY = 44;
+				outlineX = btnX - (outlineWidth - btnWidth) / 2;
+				outlineY = btnY - (outlineHeight - btnHeight) / 2;
+			} else if (i >= 4 && i <= 8) { // Row 2
+				btnX = 200 + (btnWidth + btnSpacing) * (i - 4);
+				btnY = 244;
+				outlineX = btnX + (btnWidth - outlineWidth) / 2 - 6;
+				outlineY = btnY - (outlineHeight - btnHeight) / 2 - 6;
+			} else if (i >= 9 && i <= 13) { // Row 3
+				btnX = 200 + (btnWidth + btnSpacing) * (i - 9);
+				btnY = 428;
+				outlineX = btnX + (btnWidth - outlineWidth) / 2 - 6;
+				outlineY = btnY - (outlineHeight - btnHeight) / 2 - 6;
+			}
+
+			// Automatically create the appropiate amount of buttons.
+			var button = createButton(btnX, btnY, i, songList);
+			btnGroup.add(button);
+	
+			// Automatically create the appropiate amount of outlines.
+			var outline = createOutline(outlineX, outlineY);
+			outlineGroup.add(outline);
+		}
+		add(btnGroup);
+		add(outlineGroup);
+	
+		return btnGroup;
+	}
+
+	function createButton(btnX:Float, btnY:Float, index:Int, songList:Array<String>):FlxButton
+	{
+		// Button creation.
+		var button = new FlxButton(btnX, btnY, "", onButtonClicked.bind(index, songList));
+
+		// Check if the song is unlocked.
+		var songName = songList[index].split(' ').join('').split('-').join('');
+		if (developmentMode || SongUnlock.isSongUnlocked(songName)) {
+			// Load a sprite sharing the name of the song.
+			button.loadGraphic(Paths.image(songSprites + songList[index]));
+		} else {
+			if (index >= 12) {
+				// Load secret locked song sprite.
+				button.loadGraphic(Paths.image(spritePath + "lockedSongCode"));
+			} else {
+				// Load standard locked song sprite.
+				button.loadGraphic(Paths.image(spritePath + "lockedSong"));
+			}
+		}
+		
+		// Scale the button to the desired size.
+		button.scale.set(btnWidth / button.width, btnHeight / button.height); 
+
+		// Assign button events to functions.
+		button.onOver.callback = onButtonHighlight.bind(index, songList);
+		button.onOut.callback = onButtonDeselect.bind(index, songList); 
+		
+		return button;
+	}
+
+	function createOutline(outlineX:Float, outlineY:Float):FlxSprite 
+	{
+		// Outline creation.
+		var outline = new FlxSprite(outlineX, outlineY);
+
+		// Load the outline sprite.
+		outline.loadGraphic(Paths.image(spritePath + "buttonOutline")); 
+
+		// Scale the button to the desired size.
+		outline.scale.set(outlineWidth / outline.width, outlineHeight / outline.height); // Scale the outline to the desired size.
+		
+		return outline;
+	}
+
+	function onButtonClicked(index:Int, songList:Array<String>) 
+	{
+		persistentUpdate = false;
+
+		// Set the current selection to the index of the clicked button
+		curSelected = index; 
+
+		// // Prevent player from playing a song if they haven't cleared Story Mode.
+		// var achieveID:Int = Achievements.getAchievementIndex('week1');
+		// if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) {
+		// 	camMenu.shake(0.05, 0.25);
+		// 	return;
+		// }
+
+		// // Prevent player from starting secret songs.
+		// var songNoSymbol = songList[curSelected].split(' ').join('').split('-').join('');
+		// if (!developmentMode && index >= 12 && !SongUnlock.isSongUnlocked(songNoSymbol)) {
+		// 	camMenu.shake(0.05, 0.25);
+		// 	return;
+		// }
+
+		var songLowercase:String = Paths.formatToSongPath(songList[curSelected]);
+		var songFormatted:String = Highscore.formatSong(songLowercase, curDifficulty);
+
+		// Play a sound when the button is clicked.
+		FlxG.sound.play(Paths.sound('confirmMenu'), 1);
+
+		PlayState.SONG = Song.loadFromJson(songFormatted, songLowercase);
+		PlayState.isStoryMode = false;
+		PlayState.storyDifficulty = curDifficulty;
+
+		LoadingState.loadAndSwitchState(FlxG.keys.pressed.SHIFT ? new ChartingState() : new PlayState());
+
+		FlxG.mouse.visible = false;
+		FlxG.sound.music.volume = 0;
+	}
+
+	function onButtonHighlight(index:Int, songList:Array<String>) 
+	{
+		persistentUpdate = false;
+
+		// Set the current selection to the index of the highlighted button
+		curSelected = index;
+
+		var songNoSymbol = songList[curSelected].split(' ').join('').split('-').join('');
+		var songLowercase:String = Paths.formatToSongPath(songList[curSelected]);
+		var songFormatted:String = Highscore.formatSong(songLowercase, curDifficulty);
+		
+		#if !switch
+		intendedScore = Highscore.getScore(songLowercase, curDifficulty);
+		intendedRating = Highscore.getRating(songLowercase, curDifficulty);
+		#end
+
+		// Play a sound when the button is highlighted.
+		FlxG.sound.play(Paths.sound('scrollMenu'), 1);
+
+		if (developmentMode || SongUnlock.isSongUnlocked(songNoSymbol)) {
+			var button = btnGroup.members[curSelected];
+			var outline = outlineGroup.members[curSelected];
+			button.scale.set(button.scale.x * 1.1, button.scale.y * 1.1);
+			outline.scale.set(outline.scale.x * 1.1, outline.scale.y * 1.1);
+		}
+
+		#if debug
+		/* Debug build stuff. */
+		trace("curSelected: " + curSelected + ", songFormatted: " + songFormatted);
+		#end
+	}
+
+	function onButtonDeselect(index:Int, songList:Array<String>) 
+	{
+		persistentUpdate = false;
+		curSelected = index;
+	  
+		var songNoSymbol = songList[curSelected].split(' ').join('').split('-').join('');
+		if (developmentMode || SongUnlock.isSongUnlocked(songNoSymbol)) {
+			var button = btnGroup.members[curSelected];
+			var outline = outlineGroup.members[curSelected];
+			button.scale.set(button.scale.x / 1.1, button.scale.y / 1.1);
+			outline.scale.set(outline.scale.x / 1.1, outline.scale.y / 1.1);
+		}
+
+		index = -1;
+		curSelected = index;
+
+		#if debug
+		/* Debug build stuff. */
+		trace("curSelected: " + curSelected);
+		#end
+	}
+
+	function onSecretCode()
+	{
+		persistentUpdate = false;
+
+		// #if ACHIEVEMENTS_ALLOWED
+		// 	unlockAchievement();
+		// #end
+
+		FlxG.sound.play(Paths.sound('confirmMenu'), 1);
+
+		PlayState.isCodeInput = true;
+		PlayState.isStoryMode = true;
+
+		PlayState.storyPlaylist = ['out-of-bounds', 'until-next-time'];
+
+		var diffic = Difficulty.getFilePath(curDifficulty);
+		if(diffic == null) diffic = '';
+
+		PlayState.storyDifficulty = curDifficulty;
+		PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+
+		PlayState.campaignScore = 0;
+		PlayState.campaignMisses = 0;
+
+		new FlxTimer().start(1, function(tmr:FlxTimer) {
+			LoadingState.loadAndSwitchState(new PlayState(), true);
+		});
+
+		FlxG.mouse.visible = false;
+		FlxG.sound.music.volume = 0;
+    }
+
+	function checkSecretCode(): Void {
+		// Initialize with an invalid value.
+		var keyPressed:Int = -1; 
+		
+		// Array access was apparently not "allowed" so here's some ugly if/else conditions.
+		// Checks if any of the specific keys are pressed.
+		if (FlxG.keys.justPressed.THREE) {
+			keyPressed = 3;
+			trace("Button pressed: THREE");
+		} else if (FlxG.keys.justPressed.NINE) {
+			keyPressed = 9;
+			trace("Button pressed: NINE");
+		} else if (FlxG.keys.justPressed.FIVE) {
+			keyPressed = 5;
+			trace("Button pressed: FIVE");
+		} else if (FlxG.keys.justPressed.TWO) {
+			keyPressed = 2;
+			trace("Button pressed: TWO");
+		} else if (FlxG.keys.justPressed.FOUR) {
+			keyPressed = 4;
+			trace("Button pressed: FOUR");
+		} else if (FlxG.keys.justPressed.EIGHT) {
+			keyPressed = 8;
+			trace("Button pressed: EIGHT");
+		}
+		
+		if (keyPressed != -1) {
+			// Check if the pressed key matches the expected number.
+			if (userInput.length < secretCode.length) {
+				if (keyPressed == secretCode[userInput.length]) {
+					// Pressed key matches, push it into userInput.
+					userInput.push(keyPressed);
+					FlxG.sound.play(Paths.sound('success'), 1);
+					trace("Current userInput: " + userInput);
+				} else {
+					// Pressed key doesn't match, reset userInput.
+					userInput = []; 
+					FlxG.sound.play(Paths.sound('fail'), 1);
+					trace("Invalid key press. userInput cleared.");
+				}
+			}
+
+			if (userInput.length == secretCode.length) {
+				var isSecretCodeMatched:Bool = true;
+				
+				// Check if the userInput matches the secretCode.
+				for (i in 0...userInput.length) {
+					if (userInput[i] != secretCode[i]) {
+						isSecretCodeMatched = false;
+						break;
+					}
+				}
+
+				if (isSecretCodeMatched) {
+					trace("Secret code matched!");
+					onSecretCode();
+				} else {
+					userInput = []; // Clear userInput if the secret code is not matched
+					trace("Secret code not matched. userInput cleared.");
+				}
+			}
+		}
+	}
+
+	// function unlockAchievement()
+	// {
+	// 	Achievements.loadAchievements();
+	// 	var achieveID:Int = Achievements.getAchievementIndex('code_cracker');
+	// 	if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) {
+	// 		Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
+	// 		add(new AchievementObject('code_cracker', camAchievement));
+	// 		trace('Giving achievement "code_cracker"');
+	// 		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
+	// 		ClientPrefs.saveSettings();
+	// 	}
+	// }
+
+	public function difficultySelector()
+	{
+		FlxG.mouse.visible = false;
+
+		isDiffTablet = true;
+		difficultyTablet.visible = true;
+		difficultyTablet.animation.play('Anim In');
+
+		difficultyTablet.animation.finishCallback = function(name:String) {
+			switch (name) {
+				case 'Anim In':
+					difficultyTablet.animation.play('Anim Opened');
+					diffNormal.visible = true;
+					diffEasy.visible = true;
+	
+				case 'Anim Out':
+					isDiffTablet = false;
+					difficultyTablet.visible = false;
+				FlxG.mouse.visible = true;
+			}
+		};
+	}
+
+	public function openModifiers()
+	{
+		FlxG.mouse.visible = false;
+		openSubState(new GameplayChangersSubstate());
+	}
+
+	public function openAwards()
+	{
+		MusicBeatState.switchState(new AchievementsMenuState());
+	}
+
+	/*--------------- End of FNAF 3 Menu Stuff --------------- */
 
 	override function closeSubState()
 	{
@@ -209,12 +599,6 @@ class FreeplayState extends MusicBeatState
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
 	}
 
-	var instPlaying:Int = -1;
-	public static var vocals:FlxSound = null;
-	public static var opponentVocals:FlxSound = null;
-	var holdTime:Float = 0;
-
-	var stopMusicPlay:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if(WeekData.weeksList.length < 1)
@@ -238,307 +622,74 @@ class FreeplayState extends MusicBeatState
 		while(ratingSplit[1].length < 2) //Less than 2 decimals in it, add decimals then
 			ratingSplit[1] += '0';
 
-		var shiftMult:Int = 1;
-		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
+		scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + ratingSplit.join('.') + '%)';
 
-		if (!player.playingMusic)
-		{
-			scoreText.text = Language.getPhrase('personal_best', 'PERSONAL BEST: {1} ({2}%)', [lerpScore, ratingSplit.join('.')]);
-			positionHighscore();
-			
-			if(songs.length > 1)
-			{
-				if(FlxG.keys.justPressed.HOME)
-				{
-					curSelected = 0;
-					changeSelection();
-					holdTime = 0;	
+		if (controls.UI_LEFT_P || controls.UI_RIGHT_P || controls.UI_DOWN_P || controls.UI_UP_P) {
+			if (isDiffTablet) {
+				if (curDifficulty != 0) {
+					curDifficulty = 0;
+				} else {
+					curDifficulty = 1;
 				}
-				else if(FlxG.keys.justPressed.END)
-				{
-					curSelected = songs.length - 1;
-					changeSelection();
-					holdTime = 0;	
-				}
-				if (controls.UI_UP_P)
-				{
-					changeSelection(-shiftMult);
-					holdTime = 0;
-				}
-				if (controls.UI_DOWN_P)
-				{
-					changeSelection(shiftMult);
-					holdTime = 0;
-				}
-
-				if(controls.UI_DOWN || controls.UI_UP)
-				{
-					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
-					holdTime += elapsed;
-					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-
-					if(holdTime > 0.5 && checkNewHold - checkLastHold > 0)
-						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
-				}
-
-				if(FlxG.mouse.wheel != 0)
-				{
-					FlxG.sound.play(Paths.sound('scrollMenu'), 0.2);
-					changeSelection(-shiftMult * FlxG.mouse.wheel, false);
-				}
-			}
-
-			if (controls.UI_LEFT_P)
-			{
-				changeDiff(-1);
-				_updateSongLastDifficulty();
-			}
-			else if (controls.UI_RIGHT_P)
-			{
-				changeDiff(1);
-				_updateSongLastDifficulty();
 			}
 		}
 
-		if (controls.BACK)
-		{
-			if (player.playingMusic)
-			{
-				FlxG.sound.music.stop();
-				destroyFreeplayVocals();
-				FlxG.sound.music.volume = 0;
-				instPlaying = -1;
+		/* This is such a ugly way to get this working */
+		// Lulu
+		if (curDifficulty == 1) {
+			diffNormal.text = "< Normal >";
+			diffEasy.text = "Easy";
+			scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + ratingSplit.join('.') + '%)';
 
-				player.playingMusic = false;
-				player.switchPlayMusic();
+		} else if (curDifficulty == 0) {
+			diffNormal.text = "Normal";
+			diffEasy.text = "< Easy >";
+			scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + ratingSplit.join('.') + '%)';
+		}
 
-				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-				FlxTween.tween(FlxG.sound.music, {volume: 1}, 1);
-			}
-			else 
-			{
+		if (controls.BACK) {
+			if (isDiffTablet) {
+				diffNormal.visible = false;
+				diffEasy.visible = false;
+				difficultyTablet.animation.play('Anim Out');
+				
+			} else {
 				persistentUpdate = false;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 			}
 		}
 
-		if(FlxG.keys.justPressed.CONTROL && !player.playingMusic)
-		{
+		if(FlxG.keys.justPressed.CONTROL && !isDiffTablet) {
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
-		else if(FlxG.keys.justPressed.SPACE)
-		{
-			if(instPlaying != curSelected && !player.playingMusic)
-			{
-				destroyFreeplayVocals();
-				FlxG.sound.music.volume = 0;
 
-				Mods.currentModDirectory = songs[curSelected].folder;
-				var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), curDifficulty);
-				Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
-				if (PlayState.SONG.needsVoices)
-				{
-					vocals = new FlxSound();
-					try
-					{
-						var playerVocals:String = getVocalFromCharacter(PlayState.SONG.player1);
-						var loadedVocals = Paths.voices(PlayState.SONG.song, (playerVocals != null && playerVocals.length > 0) ? playerVocals : 'Player');
-						if(loadedVocals == null) loadedVocals = Paths.voices(PlayState.SONG.song);
-						
-						if(loadedVocals != null && loadedVocals.length > 0)
-						{
-							vocals.loadEmbedded(loadedVocals);
-							FlxG.sound.list.add(vocals);
-							vocals.persist = vocals.looped = true;
-							vocals.volume = 0.8;
-							vocals.play();
-							vocals.pause();
-						}
-						else vocals = FlxDestroyUtil.destroy(vocals);
-					}
-					catch(e:Dynamic)
-					{
-						vocals = FlxDestroyUtil.destroy(vocals);
-					}
-					
-					opponentVocals = new FlxSound();
-					try
-					{
-						//trace('please work...');
-						var oppVocals:String = getVocalFromCharacter(PlayState.SONG.player2);
-						var loadedVocals = Paths.voices(PlayState.SONG.song, (oppVocals != null && oppVocals.length > 0) ? oppVocals : 'Opponent');
-						
-						if(loadedVocals != null && loadedVocals.length > 0)
-						{
-							opponentVocals.loadEmbedded(loadedVocals);
-							FlxG.sound.list.add(opponentVocals);
-							opponentVocals.persist = opponentVocals.looped = true;
-							opponentVocals.volume = 0.8;
-							opponentVocals.play();
-							opponentVocals.pause();
-							//trace('yaaay!!');
-						}
-						else opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
-					}
-					catch(e:Dynamic)
-					{
-						//trace('FUUUCK');
-						opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
-					}
-				}
-
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.8);
-				FlxG.sound.music.pause();
-				instPlaying = curSelected;
-
-				player.playingMusic = true;
-				player.curTime = 0;
-				player.switchPlayMusic();
-				player.pauseOrResume(true);
-			}
-			else if (instPlaying == curSelected && player.playingMusic)
-			{
-				player.pauseOrResume(!player.playing);
-			}
-		}
-		else if (controls.ACCEPT && !player.playingMusic)
-		{
+		if (FlxG.keys.justPressed.ALT && !isDiffTablet) {
 			persistentUpdate = false;
-			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
-			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
-
-			try
-			{
-				Song.loadFromJson(poop, songLowercase);
-				PlayState.isStoryMode = false;
-				PlayState.storyDifficulty = curDifficulty;
-
-				trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
-			}
-			catch(e:haxe.Exception)
-			{
-				trace('ERROR! ${e.message}');
-
-				var errorStr:String = e.message;
-				if(errorStr.contains('There is no TEXT asset with an ID of')) errorStr = 'Missing file: ' + errorStr.substring(errorStr.indexOf(songLowercase), errorStr.length-1); //Missing chart
-				else errorStr += '\n\n' + e.stack;
-
-				missingText.text = 'ERROR WHILE LOADING CHART:\n$errorStr';
-				missingText.screenCenter(Y);
-				missingText.visible = true;
-				missingTextBG.visible = true;
-				FlxG.sound.play(Paths.sound('cancelMenu'));
-
-				updateTexts(elapsed);
-				super.update(elapsed);
-				return;
-			}
-
-			@:privateAccess
-			if(PlayState._lastLoadedModDirectory != Mods.currentModDirectory)
-			{
-				trace('CHANGED MOD DIRECTORY, RELOADING STUFF');
-				Paths.freeGraphicsFromMemory();
-			}
-			LoadingState.prepareToSong();
-			LoadingState.loadAndSwitchState(new PlayState());
-			#if !SHOW_LOADING_SCREEN FlxG.sound.music.stop(); #end
-			stopMusicPlay = true;
-
-			destroyFreeplayVocals();
-			#if (MODS_ALLOWED && DISCORD_ALLOWED)
-			DiscordClient.loadModRPC();
-			#end
-		}
-		else if(controls.RESET && !player.playingMusic)
-		{
-			persistentUpdate = false;
-			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			FlxG.sound.play(Paths.sound('done'), 0.7);
+			MusicBeatState.switchState(new AchievementsMenuState());
+			
 		}
 
-		updateTexts(elapsed);
 		super.update(elapsed);
-	}
-	
-	function getVocalFromCharacter(char:String)
-	{
-		try
-		{
-			var path:String = Paths.getPath('characters/$char.json', TEXT);
-			#if MODS_ALLOWED
-			var character:Dynamic = Json.parse(File.getContent(path));
-			#else
-			var character:Dynamic = Json.parse(Assets.getText(path));
-			#end
-			return character.vocals_file;
-		}
-		catch (e:Dynamic) {}
-		return null;
-	}
 
-	public static function destroyFreeplayVocals() {
-		if(vocals != null) vocals.stop();
-		vocals = FlxDestroyUtil.destroy(vocals);
-
-		if(opponentVocals != null) opponentVocals.stop();
-		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
-	}
-
-	function changeDiff(change:Int = 0)
-	{
-		if (player.playingMusic)
-			return;
-
-		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
-		#if !switch
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-		intendedRating = Highscore.getRating(songs[curSelected].songName, curDifficulty);
-		#end
-
-		lastDifficultyName = Difficulty.getString(curDifficulty, false);
-		var displayDiff:String = Difficulty.getString(curDifficulty);
-		if (Difficulty.list.length > 1)
-			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
-		else
-			diffText.text = displayDiff.toUpperCase();
-
-		positionHighscore();
-		missingText.visible = false;
-		missingTextBG.visible = false;
+		// Check for secret code input.
+		checkSecretCode();
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
-		if (player.playingMusic)
-			return;
-
 		curSelected = FlxMath.wrap(curSelected + change, 0, songs.length-1);
 		_updateSongLastDifficulty();
+
+		if (curSelected < 0)
+			curSelected = songs.length - 1;
+		if (curSelected >= songs.length)
+			curSelected = 0;
+
 		if(playSound) FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		var newColor:Int = songs[curSelected].color;
-		if(newColor != intendedColor)
-		{
-			intendedColor = newColor;
-			FlxTween.cancelTweensOf(bg);
-			FlxTween.color(bg, 1, bg.color, intendedColor);
-		}
-
-		for (num => item in grpSongs.members)
-		{
-			var icon:HealthIcon = iconArray[num];
-			item.alpha = 0.6;
-			icon.alpha = 0.6;
-			if (item.targetY == curSelected)
-			{
-				item.alpha = 1;
-				icon.alpha = 1;
-			}
-		}
-		
 		Mods.currentModDirectory = songs[curSelected].folder;
 		PlayState.storyWeek = songs[curSelected].week;
 		Difficulty.loadFromWeek();
@@ -554,57 +705,11 @@ class FreeplayState extends MusicBeatState
 		else
 			curDifficulty = 0;
 
-		changeDiff();
 		_updateSongLastDifficulty();
 	}
 
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
-
-	private function positionHighscore()
-	{
-		scoreText.x = FlxG.width - scoreText.width - 6;
-		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
-		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
-		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
-		diffText.x -= diffText.width / 2;
-	}
-
-	var _drawDistance:Int = 4;
-	var _lastVisibles:Array<Int> = [];
-	public function updateTexts(elapsed:Float = 0.0)
-	{
-		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
-		for (i in _lastVisibles)
-		{
-			grpSongs.members[i].visible = grpSongs.members[i].active = false;
-			iconArray[i].visible = iconArray[i].active = false;
-		}
-		_lastVisibles = [];
-
-		var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));
-		var max:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected + _drawDistance)));
-		for (i in min...max)
-		{
-			var item:Alphabet = grpSongs.members[i];
-			item.visible = item.active = true;
-			item.x = ((item.targetY - lerpSelected) * item.distancePerItem.x) + item.startPosition.x;
-			item.y = ((item.targetY - lerpSelected) * 1.3 * item.distancePerItem.y) + item.startPosition.y;
-
-			var icon:HealthIcon = iconArray[i];
-			icon.visible = icon.active = true;
-			_lastVisibles.push(i);
-		}
-	}
-
-	override function destroy():Void
-	{
-		super.destroy();
-
-		FlxG.autoPause = ClientPrefs.data.autoPause;
-		if (!FlxG.sound.music.playing && !stopMusicPlay)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-	}	
 }
 
 class SongMetadata
