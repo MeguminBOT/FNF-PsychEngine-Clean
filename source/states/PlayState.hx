@@ -31,8 +31,6 @@ import shaders.ErrorHandledShader;
 import objects.VideoSprite;
 import objects.Note.EventNote;
 import objects.*;
-import states.stages.*;
-import states.stages.objects.*;
 #if LUA_ALLOWED
 import psychlua.*;
 #else
@@ -52,8 +50,8 @@ import crowplexus.hscript.Printer;
  * here's some useful tips if you are making a mod in source:
  *
  * If you want to add your stage to the game, copy states/stages/Template.hx,
- * and put your stage code there, then, on PlayState, search for
- * "switch (curStage)", and add your stage to that list.
+ * and put your stage code there. Use stage JSON files to configure stages,
+ * or add custom stage loading logic as needed.
  *
  * If you want to code Events, you can either code it on a Stage file or on PlayState, if you're doing the latter, search for:
  *
@@ -377,31 +375,7 @@ class PlayState extends MusicBeatState
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
-		switch (curStage)
-		{
-			case 'stage':
-				new StageWeek1(); // Week 1
-			case 'spooky':
-				new Spooky(); // Week 2
-			case 'philly':
-				new Philly(); // Week 3
-			case 'limo':
-				new Limo(); // Week 4
-			case 'mall':
-				new Mall(); // Week 5 - Cocoa, Eggnog
-			case 'mallEvil':
-				new MallEvil(); // Week 5 - Winter Horrorland
-			case 'school':
-				new School(); // Week 6 - Senpai, Roses
-			case 'schoolEvil':
-				new SchoolEvil(); // Week 6 - Thorns
-			case 'tank':
-				new Tank(); // Week 7 - Ugh, Guns, Stress
-			case 'phillyStreets':
-				new PhillyStreets(); // Weekend 1 - Darnell, Lit Up, 2Hot
-			case 'phillyBlazin':
-				new PhillyBlazin(); // Weekend 1 - Blazin
-		}
+		// Base game stages removed - use custom stages or stage JSON files
 		if (isPixelStage)
 			introSoundsSuffix = '-pixel';
 
@@ -2690,7 +2664,6 @@ class PlayState extends MusicBeatState
 			'hype',
 			'two_keys',
 			'toastie'
-			#if BASE_GAME_FILES, 'debugger' #end
 		]);
 		#end
 
@@ -3956,11 +3929,6 @@ class PlayState extends MusicBeatState
 
 					case 'toastie':
 						unlock = (!ClientPrefs.data.cacheOnGPU && !ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing);
-
-					#if BASE_GAME_FILES
-					case 'debugger':
-						unlock = (songName == 'test' && !usedPractice);
-					#end
 				}
 			}
 			else // any FC achievements, name should be "weekFileName_nomiss", e.g: "week3_nomiss";
