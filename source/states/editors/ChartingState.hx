@@ -7,27 +7,21 @@ import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxDestroyUtil;
 import flixel.input.keyboard.FlxKey;
-
 import lime.utils.Assets;
 import lime.media.AudioBuffer;
-
 import flash.media.Sound;
 import flash.geom.Rectangle;
-
 import haxe.Json;
 import haxe.Exception;
 import haxe.io.Bytes;
-
 import states.editors.content.MetaNote;
 import states.editors.content.VSlice;
 import states.editors.content.Prompt;
 import states.editors.content.*;
-
 import backend.Song;
 import backend.StageData;
 import backend.Highscore;
 import backend.Difficulty;
-
 import objects.Character;
 import objects.HealthIcon;
 import objects.Note;
@@ -35,7 +29,8 @@ import objects.StrumNote;
 
 using DateTools;
 
-typedef UndoStruct = {
+typedef UndoStruct =
+{
 	var action:UndoAction;
 	var data:Dynamic;
 }
@@ -66,8 +61,7 @@ enum abstract WaveformTarget(String)
 
 class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychUIEvent
 {
-	public static final defaultEvents:Array<Array<String>> =
-	[
+	public static final defaultEvents:Array<Array<String>> = [
 		['', "Nothing. Yep, that's right."], //Always leave this one empty pls
 		['Dadbattle Spotlight', "Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"],
 		['Hey!', "Plays the \"Hey!\" animation from Bopeebo,\nValue 1: BF = Only Boyfriend, GF = Only Girlfriend,\nSomething else = Both.\nValue 2: Custom animation duration,\nleave it blank for 0.6s"],
@@ -86,27 +80,15 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['Set Property', "Value 1: Variable name\nValue 2: New value"],
 		['Play Sound', "Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"]
 	];
-	
-	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor
+	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; // Used for Vortex Editor
 	public static var SHOW_EVENT_COLUMN = true;
 	public static var GRID_COLUMNS_PER_PLAYER = 4;
 	public static var GRID_PLAYERS = 2;
 	public static var GRID_SIZE = 40;
+
 	final BACKUP_EXT = '.bkp';
 
-	public var quantizations:Array<Int> = [
-		4,
-		8,
-		12,
-		16,
-		20,
-		24,
-		32,
-		48,
-		64,
-		96,
-		192
-	];
+	public var quantizations:Array<Int> = [4, 8, 12, 16, 20, 24, 32, 48, 64, 96, 192];
 	public var quantColors:Array<FlxColor> = [
 		0xFFDF0000,
 		0xFF4040CF,
@@ -120,15 +102,20 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		0xFF9F9F9F,
 		0xFF3F3F3F,
 	];
+
 	var curQuant(default, set):Int = 16;
+
 	function set_curQuant(v:Int)
 	{
 		curQuant = v;
 		updateVortexColor();
 		return curQuant;
 	}
+
 	function updateVortexColor()
-		vortexIndicator.color = quantColors[Std.int(FlxMath.bound(quantizations.indexOf(curQuant), 0, quantColors.length - 1))];
+		vortexIndicator.color = quantColors[
+			Std.int(FlxMath.bound(quantizations.indexOf(curQuant), 0, quantColors.length - 1))
+		];
 
 	var sectionFirstNoteID:Int = 0;
 	var sectionFirstEventID:Int = 0;
@@ -140,7 +127,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var infoBox:PsychUIBox;
 	var infoBoxPosition:FlxPoint = FlxPoint.get(1000, 360);
 	var upperBox:PsychUIBox;
-	
+
 	var camUI:FlxCamera;
 
 	var prevGridBg:ChartingGridSprite;
@@ -148,20 +135,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var nextGridBg:ChartingGridSprite;
 	var waveformSprite:FlxSprite;
 	var scrollY:Float = 0;
-	
-	var zoomList:Array<Float> = [
-		0.25,
-		0.5,
-		1,
-		2,
-		3,
-		4,
-		6,
-		8,
-		12,
-		16,
-		24
-	];
+
+	var zoomList:Array<Float> = [0.25, 0.5, 1, 2, 3, 4, 6, 8, 12, 16, 24];
 	var curZoom:Float = 1;
 
 	var mustHitIndicator:FlxSprite;
@@ -181,7 +156,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var isMovingNotes:Bool = false;
 	var movingNotesLastData:Int = 0;
 	var movingNotesLastY:Float = 0;
-	
+
 	var vocals:FlxSound = new FlxSound();
 	var opponentVocals:FlxSound = new FlxSound();
 
@@ -195,6 +170,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var selectionBox:FlxSprite;
 
 	var _shouldReset:Bool = true;
+
 	public function new(?shouldReset:Bool = true)
 	{
 		this._shouldReset = shouldReset;
@@ -206,22 +182,24 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	var copiedNotes:Array<Dynamic> = [];
 	var copiedEvents:Array<Dynamic> = [];
-	
+
 	var _keysPressedBuffer:Array<Bool> = [];
 
 	var tipBg:FlxSprite;
 	var fullTipText:FlxText;
-	
+
 	var vortexEnabled:Bool = false;
 	var waveformEnabled:Bool = false;
 	var waveformTarget:WaveformTarget = INST;
 
 	override function create()
 	{
-		if(Difficulty.list.length < 1) Difficulty.resetList();
+		if (Difficulty.list.length < 1)
+			Difficulty.resetList();
 		_keysPressedBuffer.resize(keysArray.length);
 
-		if(_shouldReset) Conductor.songPosition = 0;
+		if (_shouldReset)
+			Conductor.songPosition = 0;
 		persistentUpdate = false;
 		FlxG.mouse.visible = true;
 		FlxG.sound.list.add(vocals);
@@ -245,16 +223,20 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		bg.scrollFactor.set();
 		add(bg);
 
-		if(chartEditorSave.data.autoSave != null) autoSaveCap = chartEditorSave.data.autoSave;
-		if(chartEditorSave.data.backupLimit != null) backupLimit = chartEditorSave.data.backupLimit;
-		if(chartEditorSave.data.vortex != null) vortexEnabled = chartEditorSave.data.vortex;
+		if (chartEditorSave.data.autoSave != null)
+			autoSaveCap = chartEditorSave.data.autoSave;
+		if (chartEditorSave.data.backupLimit != null)
+			backupLimit = chartEditorSave.data.backupLimit;
+		if (chartEditorSave.data.vortex != null)
+			vortexEnabled = chartEditorSave.data.vortex;
 
-		if(chartEditorSave.data.customBgColor == null) chartEditorSave.data.customBgColor = '303030';
-		if(chartEditorSave.data.customGridColors == null || chartEditorSave.data.customGridColors.length < 2)
+		if (chartEditorSave.data.customBgColor == null)
+			chartEditorSave.data.customBgColor = '303030';
+		if (chartEditorSave.data.customGridColors == null || chartEditorSave.data.customGridColors.length < 2)
 			chartEditorSave.data.customGridColors = ['DFDFDF', 'BFBFBF'];
-		if(chartEditorSave.data.customNextGridColors == null || chartEditorSave.data.customNextGridColors.length < 2)
+		if (chartEditorSave.data.customNextGridColors == null || chartEditorSave.data.customNextGridColors.length < 2)
 			chartEditorSave.data.customNextGridColors = ['5F5F5F', '4A4A4A'];
-		
+
 		changeTheme(chartEditorSave.data.theme != null ? chartEditorSave.data.theme : DEFAULT, false);
 
 		createGrids();
@@ -270,7 +252,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		dummyArrow.scrollFactor.x = 0;
 		add(dummyArrow);
 
-		vortexIndicator = new FlxSprite(gridBg.x - GRID_SIZE, FlxG.height/2).loadGraphic(Paths.image('editors/vortex_indicator'));
+		vortexIndicator = new FlxSprite(gridBg.x - GRID_SIZE, FlxG.height / 2).loadGraphic(Paths.image('editors/vortex_indicator'));
 		vortexIndicator.setGraphicSize(GRID_SIZE);
 		vortexIndicator.updateHitbox();
 		vortexIndicator.scrollFactor.set();
@@ -297,11 +279,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		timeLine.screenCenter(Y);
 		timeLine.scrollFactor.set();
 		add(timeLine);
-		
+
 		var startX:Float = gridBg.x;
-		var startY:Float = FlxG.height/2;
+		var startY:Float = FlxG.height / 2;
 		vortexIndicator.visible = strumLineNotes.visible = strumLineNotes.active = vortexEnabled;
-		if(SHOW_EVENT_COLUMN) startX += GRID_SIZE;
+		if (SHOW_EVENT_COLUMN)
+			startX += GRID_SIZE;
 
 		for (i in 0...Std.int(GRID_PLAYERS * GRID_COLUMNS_PER_PLAYER))
 		{
@@ -310,21 +293,21 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			note.playAnim('static');
 			note.alpha = 0.4;
 			note.updateHitbox();
-			if(note.width > note.height)
+			if (note.width > note.height)
 				note.setGraphicSize(GRID_SIZE);
 			else
 				note.setGraphicSize(0, GRID_SIZE);
-	
+
 			note.updateHitbox();
-			note.x += GRID_SIZE/2 - note.width/2;
-			note.y += GRID_SIZE/2 - note.height/2;
+			note.x += GRID_SIZE / 2 - note.width / 2;
+			note.y += GRID_SIZE / 2 - note.height / 2;
 			strumLineNotes.add(note);
 		}
 
 		var columns:Int = 0;
 		var iconX:Float = gridBg.x;
 		var iconY:Float = 50;
-		if(SHOW_EVENT_COLUMN)
+		if (SHOW_EVENT_COLUMN)
 		{
 			eventIcon = new FlxSprite(0, iconY).loadGraphic(Paths.image('editors/eventIcon'));
 			eventIcon.antialiasing = ClientPrefs.data.antialiasing;
@@ -333,7 +316,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			eventIcon.updateHitbox();
 			eventIcon.scrollFactor.set();
 			add(eventIcon);
-			eventIcon.x = iconX + (GRID_SIZE * 0.5) - eventIcon.width/2;
+			eventIcon.x = iconX + (GRID_SIZE * 0.5) - eventIcon.width / 2;
 			iconX += GRID_SIZE;
 
 			columns++;
@@ -342,13 +325,14 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		mustHitIndicator = FlxSpriteUtil.drawTriangle(new FlxSprite(0, iconY - 20).makeGraphic(16, 16, FlxColor.TRANSPARENT), 0, 0, 16);
 		mustHitIndicator.scrollFactor.set();
 		mustHitIndicator.flipY = true;
-		mustHitIndicator.offset.x += mustHitIndicator.width/2;
+		mustHitIndicator.offset.x += mustHitIndicator.width / 2;
 		add(mustHitIndicator);
 
 		var gridStripes:Array<Int> = [];
 		for (i in 0...GRID_PLAYERS)
 		{
-			if(columns > 0) gridStripes.push(columns);
+			if (columns > 0)
+				gridStripes.push(columns);
 			columns += GRID_COLUMNS_PER_PLAYER;
 
 			var icon:HealthIcon = new HealthIcon();
@@ -358,15 +342,15 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			icon.scrollFactor.set();
 			icon.scale.set(0.3, 0.3);
 			icon.updateHitbox();
-			icon.ID = i+1;
+			icon.ID = i + 1;
 			add(icon);
 			icons.push(icon);
-			
-			icon.x = iconX + GRID_SIZE * (GRID_COLUMNS_PER_PLAYER/2) - icon.width/2;
+
+			icon.x = iconX + GRID_SIZE * (GRID_COLUMNS_PER_PLAYER / 2) - icon.width / 2;
 			iconX += GRID_SIZE * GRID_COLUMNS_PER_PLAYER;
 		}
 		prevGridBg.stripes = nextGridBg.stripes = gridBg.stripes = gridStripes;
-		
+
 		selectionBox = new FlxSprite().makeGraphic(1, 1, FlxColor.CYAN);
 		selectionBox.alpha = 0.4;
 		selectionBox.blend = ADD;
@@ -397,9 +381,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		add(autoSaveIcon);
 
 		// save data positions for the UI boxes
-		if(chartEditorSave.data.mainBoxPosition != null && chartEditorSave.data.mainBoxPosition.length > 1)
+		if (chartEditorSave.data.mainBoxPosition != null && chartEditorSave.data.mainBoxPosition.length > 1)
 			mainBox.setPosition(chartEditorSave.data.mainBoxPosition[0], chartEditorSave.data.mainBoxPosition[1]);
-		if(chartEditorSave.data.infoBoxPosition != null && chartEditorSave.data.infoBoxPosition.length > 1)
+		if (chartEditorSave.data.infoBoxPosition != null && chartEditorSave.data.infoBoxPosition.length > 1)
 			infoBox.setPosition(chartEditorSave.data.infoBoxPosition[0], chartEditorSave.data.infoBoxPosition[1]);
 
 		upperBox = new PsychUIBox(40, 40, 330, 300, ['File', 'Edit', 'View']);
@@ -419,13 +403,13 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		outputTxt.alpha = 0;
 		add(outputTxt);
 
-		if(PlayState.SONG == null) //Atleast try to avoid crashes
+		if (PlayState.SONG == null) // Atleast try to avoid crashes
 		{
 			openNewChart();
 		}
 
 		updateJsonData();
-		
+
 		// TABS
 		////// for main box
 		addChartingTab();
@@ -434,7 +418,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		addNoteTab();
 		addSectionTab();
 		addSongTab();
-		
+
 		////// for upper box
 		addFileTab();
 		addEditTab();
@@ -443,12 +427,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		loadMusic();
 		reloadNotesDropdowns();
-		if(!_shouldReset)
+		if (!_shouldReset)
 		{
 			vocals.time = opponentVocals.time = FlxG.sound.music.time = Conductor.songPosition - Conductor.offset;
-			if(FlxG.sound.music.time >= vocals.length)
+			if (FlxG.sound.music.time >= vocals.length)
 				vocals.pause();
-			if(FlxG.sound.music.time >= opponentVocals.length)
+			if (FlxG.sound.music.time >= opponentVocals.length)
 				opponentVocals.pause();
 		}
 
@@ -465,7 +449,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		gameOverCharacters.insert(0, '');
 		gameOverCharacters.sort(function(a:String, b:String)
 		{
-			if((a == '' || a.endsWith('-dead') || a.endsWith('-death')) && !(b == '' || b.endsWith('-dead') || b.endsWith('-death'))) return -1; //Prioritize "-dead" or "-death" characters
+			if ((a == '' || a.endsWith('-dead') || a.endsWith('-death')) && !(b == '' || b.endsWith('-dead') || b.endsWith('-death')))
+				return -1; // Prioritize "-dead" or "-death" characters
 			return 0;
 		});
 		gameOverCharDropDown.list = gameOverCharacters;
@@ -490,7 +475,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tipBg.visible = tipBg.active = false;
 		tipBg.alpha = 0.6;
 		add(tipBg);
-		
+
 		fullTipText = new FlxText(0, 0, FlxG.width - 200);
 		fullTipText.setFormat(Paths.font('vcr.ttf'), 24, FlxColor.WHITE, CENTER);
 		fullTipText.cameras = [camUI];

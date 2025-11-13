@@ -722,38 +722,35 @@ class PlayState extends MusicBeatState
 		switch (type)
 		{
 			case 0:
-				if (!boyfriendMap.exists(newCharacter))
-				{
-					var newBoyfriend:Character = new Character(0, 0, newCharacter, true);
-					boyfriendMap.set(newCharacter, newBoyfriend);
-					boyfriendGroup.add(newBoyfriend);
-					startCharacterPos(newBoyfriend);
-					newBoyfriend.alpha = 0.00001;
-					startCharacterScripts(newBoyfriend.curCharacter);
-				}
+				if (boyfriendMap.exists(newCharacter))
+					return;
+				var newBoyfriend:Character = new Character(0, 0, newCharacter, true);
+				boyfriendMap.set(newCharacter, newBoyfriend);
+				boyfriendGroup.add(newBoyfriend);
+				startCharacterPos(newBoyfriend);
+				newBoyfriend.alpha = 0.00001;
+				startCharacterScripts(newBoyfriend.curCharacter);
 
 			case 1:
-				if (!dadMap.exists(newCharacter))
-				{
-					var newDad:Character = new Character(0, 0, newCharacter);
-					dadMap.set(newCharacter, newDad);
-					dadGroup.add(newDad);
-					startCharacterPos(newDad, true);
-					newDad.alpha = 0.00001;
-					startCharacterScripts(newDad.curCharacter);
-				}
+				if (dadMap.exists(newCharacter))
+					return;
+				var newDad:Character = new Character(0, 0, newCharacter);
+				dadMap.set(newCharacter, newDad);
+				dadGroup.add(newDad);
+				startCharacterPos(newDad, true);
+				newDad.alpha = 0.00001;
+				startCharacterScripts(newDad.curCharacter);
 
 			case 2:
-				if (gf != null && !gfMap.exists(newCharacter))
-				{
-					var newGf:Character = new Character(0, 0, newCharacter);
-					newGf.scrollFactor.set(0.95, 0.95);
-					gfMap.set(newCharacter, newGf);
-					gfGroup.add(newGf);
-					startCharacterPos(newGf);
-					newGf.alpha = 0.00001;
-					startCharacterScripts(newGf.curCharacter);
-				}
+				if (gf == null || gfMap.exists(newCharacter))
+					return;
+				var newGf:Character = new Character(0, 0, newCharacter);
+				newGf.scrollFactor.set(0.95, 0.95);
+				gfMap.set(newCharacter, newGf);
+				gfGroup.add(newGf);
+				startCharacterPos(newGf);
+				newGf.alpha = 0.00001;
+				startCharacterScripts(newGf.curCharacter);
 		}
 	}
 
@@ -1948,10 +1945,11 @@ class PlayState extends MusicBeatState
 					if (startedCountdown)
 					{
 						var fakeCrochet:Float = (60 / SONG.bpm) * 1000;
+						var notesMembers:Array<Note> = notes.members;
 						var i:Int = 0;
 						while (i < notes.length)
 						{
-							var daNote:Note = notes.members[i];
+							var daNote:Note = notesMembers[i];
 							if (daNote == null)
 								continue;
 
@@ -2029,7 +2027,7 @@ class PlayState extends MusicBeatState
 		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
 
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
+		mult = FlxMath.lerp(1, iconP2.scale.x, Math.exp(-elapsed * 9 * playbackRate));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
 	}
@@ -2247,7 +2245,7 @@ class PlayState extends MusicBeatState
 				if (value != 0)
 				{
 					if (dad.curCharacter.startsWith('gf'))
-					{ // Tutorial GF is actually Dad! The GF is an imposter!! ding ding ding ding ding ding ding, dindinding, end my suffering
+					{
 						dad.playAnim('cheer', true);
 						dad.specialAnim = true;
 						dad.heyTimer = flValue2;
@@ -2569,31 +2567,6 @@ class PlayState extends MusicBeatState
 			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 			camFollow.x -= boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];
 			camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
-
-			if (songName == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
-			{
-				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {
-					ease: FlxEase.elasticInOut,
-					onComplete: function(twn:FlxTween)
-					{
-						cameraTwn = null;
-					}
-				});
-			}
-		}
-	}
-
-	public function tweenCamIn()
-	{
-		if (songName == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3)
-		{
-			cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {
-				ease: FlxEase.elasticInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					cameraTwn = null;
-				}
-			});
 		}
 	}
 
@@ -2657,14 +2630,7 @@ class PlayState extends MusicBeatState
 
 		#if ACHIEVEMENTS_ALLOWED
 		var weekNoMiss:String = WeekData.getWeekFileName() + '_nomiss';
-		checkForAchievement([
-			weekNoMiss,
-			'ur_bad',
-			'ur_good',
-			'hype',
-			'two_keys',
-			'toastie'
-		]);
+		checkForAchievement([weekNoMiss, 'ur_bad', 'ur_good', 'hype', 'two_keys', 'toastie']);
 		#end
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
@@ -3272,8 +3238,7 @@ class PlayState extends MusicBeatState
 		if (result == LuaUtils.Function_Stop)
 			return;
 
-		if (songName != 'tutorial')
-			camZooming = true;
+		camZooming = true;
 
 		if (note.noteType == 'Hey!' && dad.hasAnimation('hey'))
 		{
