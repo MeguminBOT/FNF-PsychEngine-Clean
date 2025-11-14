@@ -170,6 +170,9 @@ class HScript extends Iris
 		set('FlxTween', flixel.tweens.FlxTween);
 		set('FlxEase', flixel.tweens.FlxEase);
 		set('FlxColor', CustomFlxColor);
+		set('FlxTextBorderStyle', CustomFlxTextBorderStyle);
+		set('FlxTextAlign', CustomFlxTextAlign);
+		set('FlxAxes', CustomFlxAxes);
 		set('Countdown', backend.BaseStage.Countdown);
 		set('PlayState', PlayState);
 		set('Paths', Paths);
@@ -591,6 +594,29 @@ class CustomFlxColor
 
 	public static function fromString(str:String):Int
 		return cast FlxColor.fromString(str);
+}
+
+class CustomFlxTextBorderStyle
+{
+	public static var NONE(default, null):FlxTextBorderStyle = FlxTextBorderStyle.NONE;
+	public static var SHADOW(default, null):FlxTextBorderStyle = FlxTextBorderStyle.SHADOW;
+	public static var OUTLINE(default, null):FlxTextBorderStyle = FlxTextBorderStyle.OUTLINE;
+	public static var OUTLINE_FAST(default, null):FlxTextBorderStyle = FlxTextBorderStyle.OUTLINE_FAST;
+}
+
+class CustomFlxTextAlign
+{
+	public static var LEFT(default, null):FlxTextAlign = FlxTextAlign.LEFT;
+	public static var CENTER(default, null):FlxTextAlign = FlxTextAlign.CENTER;
+	public static var RIGHT(default, null):FlxTextAlign = FlxTextAlign.RIGHT;
+	public static var JUSTIFY(default, null):FlxTextAlign = FlxTextAlign.JUSTIFY;
+}
+
+class CustomFlxAxes
+{
+	public static var X(default, null):Int = 0x01;
+	public static var Y(default, null):Int = 0x10;
+	public static var XY(default, null):Int = 0x11;
 }
 
 class CustomInterp extends crowplexus.hscript.Interp

@@ -1,6 +1,7 @@
 package backend;
 
 import flixel.FlxG;
+import flixel.FlxBasic;
 import flixel.FlxSprite;
 import flixel.FlxObject;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -24,6 +25,9 @@ import psychlua.HScript;
 
 #if HSCRIPT_ALLOWED
 import psychlua.HScript.CustomFlxColor;
+import psychlua.HScript.CustomFlxTextBorderStyle;
+import psychlua.HScript.CustomFlxTextAlign;
+import psychlua.HScript.CustomFlxAxes;
 #end
 
 /**
@@ -40,14 +44,26 @@ class ScriptableState extends MusicBeatState
 
 	// Script folder to load from (relative to scripts/)
 	public var scriptFolder:String = '';
+	
+	// Script subfolder for variants (e.g., "default", "alt", etc.)
+	public var scriptSubfolder:String = '';
+	
+	// Track objects added after scripts start loading
+	var scriptAddedObjects:Array<FlxBasic> = [];
 
-	// Helper methods for scripts
-	public inline function addObject(obj:Dynamic):Dynamic {
-		return add(obj);
+	// Override add/insert to automatically track script-added objects
+	override public function add(obj:FlxBasic):FlxBasic {
+		var result = super.add(obj);
+		if (obj != null)
+			scriptAddedObjects.push(obj);
+		return result;
 	}
 
-	public inline function insertObject(pos:Int, obj:Dynamic):Dynamic {
-		return insert(pos, obj);
+	override public function insert(pos:Int, obj:FlxBasic):FlxBasic {
+		var result = super.insert(pos, obj);
+		if (obj != null)
+			scriptAddedObjects.push(obj);
+		return result;
 	}
 
 	public inline function createSpriteGroup():FlxTypedGroup<FlxSprite> {
@@ -66,13 +82,15 @@ class ScriptableState extends MusicBeatState
 			return;
 		}
 
-		trace('ScriptableState: Loading scripts from: ' + scriptFolder);
+		trace('ScriptableState: Loading scripts from: ' + scriptFolder + (scriptSubfolder != '' ? '/' + scriptSubfolder : ''));
 		#if MODS_ALLOWED
+		
 		var filesPushed:Array<String> = [];
-		var foldersToCheck:Array<String> = [Paths.getSharedPath('scripts/' + scriptFolder + '/')];
+		var basePath:String = 'scripts/' + scriptFolder + '/' + (scriptSubfolder != '' ? scriptSubfolder + '/' : '');
+		var foldersToCheck:Array<String> = [Paths.getSharedPath(basePath)];
 
 		for (mod in Mods.parseList().enabled)
-			foldersToCheck.push(Paths.mods('$mod/scripts/' + scriptFolder + '/'));
+			foldersToCheck.push(Paths.mods('$mod/' + basePath));
 
 		for (folder in foldersToCheck)
 		{
@@ -122,6 +140,85 @@ class ScriptableState extends MusicBeatState
 		trace('ScriptableState: Finished loading scripts. Lua: ' + luaArray.length + ', HScript: ' + hscriptArray.length);
 		#end
 	}
+	
+	/**
+	 * Get available script subfolders for the current scriptFolder.
+	 * Returns array of subfolder names found in both shared and mod directories.
+	 */
+	public function getScriptVariants():Array<String>
+	{
+		var variants:Array<String> = [];
+		#if MODS_ALLOWED
+		var basePath:String = 'scripts/' + scriptFolder + '/';
+		var foldersToCheck:Array<String> = [Paths.getSharedPath(basePath)];
+		
+		for (mod in Mods.parseList().enabled)
+			foldersToCheck.push(Paths.mods('$mod/' + basePath));
+		
+		for (folder in foldersToCheck)
+		{
+			if (FileSystem.exists(folder) && FileSystem.isDirectory(folder))
+			{
+				for (item in FileSystem.readDirectory(folder))
+				{
+					var itemPath = folder + item;
+					if (FileSystem.isDirectory(itemPath) && !variants.contains(item))
+						variants.push(item);
+				}
+			}
+		}
+		#end
+		return variants;
+	}
+	
+	/**
+	 * Reload scripts with a different subfolder variant.
+	 * Cleans up existing scripts before loading new ones.
+	 */
+	public function reloadScriptsWithVariant(variant:String)
+	{
+		// Call onDestroy on scripts before cleanup
+		#if LUA_ALLOWED
+		for (script in luaArray)
+			script.call('onDestroy', []);
+		#end
+		
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+		{
+			@:privateAccess
+			if (script.exists('onDestroy'))
+				script.call('onDestroy', []);
+		}
+		#end
+		
+		// Remove all objects that scripts added
+		for (obj in scriptAddedObjects)
+		{
+			if (obj != null)
+				remove(obj, true);
+		}
+		scriptAddedObjects = [];
+		
+		// Clean up script arrays
+		#if LUA_ALLOWED
+		for (script in luaArray)
+			script.stop();
+		luaArray = [];
+		#end
+		
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			script.destroy();
+		hscriptArray = [];
+		#end
+		
+		// Set new variant and reload
+		scriptSubfolder = variant;
+		loadScripts();
+		callOnScripts('onCreate');
+		callOnScripts('onCreatePost');
+	}
 
 	/**
 	 * Expose essential objects and classes to scripts.
@@ -144,23 +241,12 @@ class ScriptableState extends MusicBeatState
 			script.set('FlxSound', flixel.sound.FlxSound);
 			script.set('FlxText', FlxText);
 			script.set('FlxColor', CustomFlxColor);
+			script.set('FlxTextBorderStyle', CustomFlxTextBorderStyle);
+			script.set('FlxTextAlign', CustomFlxTextAlign);
+			script.set('FlxAxes', CustomFlxAxes);
 			script.set('FlxTween', FlxTween);
 			script.set('FlxEase', FlxEase);
 			script.set('FlxFlicker', FlxFlicker);
-			
-			// FlxAxes constants
-			script.set('X', FlxAxes.X);
-			script.set('Y', FlxAxes.Y);
-			script.set('XY', FlxAxes.XY);
-			
-			// FlxTextAlign constants
-			script.set('LEFT', flixel.text.FlxText.FlxTextAlign.LEFT);
-			script.set('CENTER_ALIGN', flixel.text.FlxText.FlxTextAlign.CENTER);
-			script.set('RIGHT', flixel.text.FlxText.FlxTextAlign.RIGHT);
-			
-			// FlxTextBorderStyle constants
-			script.set('OUTLINE', flixel.text.FlxText.FlxTextBorderStyle.OUTLINE);
-			script.set('SHADOW', flixel.text.FlxText.FlxTextBorderStyle.SHADOW);
 			
 			// Utility classes
 			script.set('Math', Math);
