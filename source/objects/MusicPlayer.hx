@@ -105,7 +105,6 @@ class MusicPlayer extends FlxGroup
 			pauseOrResume();
 
 			curTime = FlxG.sound.music.time - 1000;
-			instance.holdTime = 0;
 
 			if (curTime < 0)
 				curTime = 0;
@@ -121,7 +120,6 @@ class MusicPlayer extends FlxGroup
 			pauseOrResume();
 
 			curTime = FlxG.sound.music.time + 1000;
-			instance.holdTime = 0;
 
 			if (curTime > FlxG.sound.music.length)
 				curTime = FlxG.sound.music.length;
@@ -130,23 +128,7 @@ class MusicPlayer extends FlxGroup
 			setVocalsTime(curTime);
 		}
 
-		if (controls.UI_LEFT || controls.UI_RIGHT)
-		{
-			instance.holdTime += elapsed;
-			if (instance.holdTime > 0.5)
-			{
-				curTime += 40000 * elapsed * (controls.UI_LEFT ? -1 : 1);
-			}
-
-			var difference:Float = Math.abs(curTime - FlxG.sound.music.time);
-			if (curTime + difference > FlxG.sound.music.length)
-				curTime = FlxG.sound.music.length;
-			else if (curTime - difference < 0)
-				curTime = 0;
-
-			FlxG.sound.music.time = curTime;
-			setVocalsTime(curTime);
-		}
+		// Hold scrolling handled by script now
 
 		if (controls.UI_LEFT_R || controls.UI_RIGHT_R)
 		{
@@ -253,20 +235,18 @@ class MusicPlayer extends FlxGroup
 		FlxG.autoPause = (!playingMusic && ClientPrefs.data.autoPause);
 		active = visible = playingMusic;
 
-		instance.scoreBG.visible = instance.diffText.visible = instance.scoreText.visible = !playingMusic;
+		// Script handles UI visibility via callOnScripts
 		songTxt.visible = timeTxt.visible = songBG.visible = playbackTxt.visible = playbackBG.visible = progressBar.visible = playingMusic;
 
 		for (i in playbackSymbols)
 			i.visible = playingMusic;
 
 		holdPitchTime = 0;
-		instance.holdTime = 0;
 		playbackRate = 1;
 		updatePlaybackTxt();
 
 		if (playingMusic)
 		{
-			instance.bottomText.text = Language.getPhrase('musicplayer_tip', 'Press SPACE to Pause / Press ESCAPE to Exit / Press R to Reset the Song');
 			positionSong();
 
 			progressBar.setRange(0, FlxG.sound.music.length);
@@ -280,9 +260,6 @@ class MusicPlayer extends FlxGroup
 			progressBar.setRange(0, Math.POSITIVE_INFINITY);
 			progressBar.setParent(null, "");
 			progressBar.numDivisions = 0;
-
-			instance.bottomText.text = instance.bottomString;
-			instance.positionHighscore();
 		}
 		progressBar.updateBar();
 	}
