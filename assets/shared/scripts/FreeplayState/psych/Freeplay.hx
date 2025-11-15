@@ -1,10 +1,25 @@
 // Default Freeplay behavior script
 // Handles song list, selection, difficulty switching, and preview playback
+import flixel.FlxSprite;
+import flixel.text.FlxText;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import flixel.math.FlxMath;
+import psychlua.HScript.CustomFlxColor as FlxColor;
 import objects.Alphabet;
 import objects.HealthIcon;
 import objects.MusicPlayer;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
+import backend.WeekData;
+import backend.Highscore;
+import backend.Song;
+import backend.Difficulty;
+import backend.Mods;
+import backend.CoolUtil;
+import backend.Language;
+import Reflect;
 
 // Selection state
 var curSelected:Int = 0;
@@ -173,7 +188,7 @@ function onUpdate(elapsed:Float) {
 
 	var shiftMult:Int = FlxG.keys.pressed.SHIFT ? 3 : 1;
 
-	if (!player.playingMusic) {
+	if (!Reflect.field(player, 'playingMusic')) {
 		scoreText.text = Language.getPhrase('personal_best', 'PERSONAL BEST: {1} ({2}%)', [lerpScore, ratingSplit.join('.')]);
 		positionHighscore();
 
@@ -226,30 +241,30 @@ function onUpdate(elapsed:Float) {
 	}
 
 	// Back button - stop preview if playing
-	if (controls.BACK && player.playingMusic) {
+	if (controls.BACK && Reflect.field(player, 'playingMusic')) {
 		stopPreview();
 		return;
 	}
 
 	// Gameplay changers
-	if (FlxG.keys.justPressed.CONTROL && !player.playingMusic) {
+	if (FlxG.keys.justPressed.CONTROL && !Reflect.field(player, 'playingMusic')) {
 		game.persistentUpdate = false;
 		game.openSubState(new GameplayChangersSubstate());
 	}
 	// Preview playback
 	else if (FlxG.keys.justPressed.SPACE) {
-		if (instPlaying != curSelected && !player.playingMusic) {
+		if (instPlaying != curSelected && !Reflect.field(player, 'playingMusic')) {
 			playPreview();
-		} else if (instPlaying == curSelected && player.playingMusic) {
+		} else if (instPlaying == curSelected && Reflect.field(player, 'playingMusic')) {
 			player.pauseOrResume(!player.playing);
 		}
 	}
 	// Enter song
-	else if (controls.ACCEPT && !player.playingMusic) {
+	else if (controls.ACCEPT && !Reflect.field(player, 'playingMusic')) {
 		enterSong();
 	}
 	// Reset score
-	else if (controls.RESET && !player.playingMusic) {
+	else if (controls.RESET && !Reflect.field(player, 'playingMusic')) {
 		game.persistentUpdate = false;
 		game.openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
 		FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -263,7 +278,7 @@ function onCloseSubState() {
 }
 
 function changeSelection(change:Int, playSound:Bool) {
-	if (player.playingMusic)
+	if (Reflect.field(player, 'playingMusic'))
 		return;
 
 	curSelected += change;
@@ -319,7 +334,7 @@ function changeSelection(change:Int, playSound:Bool) {
 }
 
 function changeDiff(change:Int) {
-	if (player.playingMusic)
+	if (Reflect.field(player, 'playingMusic'))
 		return;
 
 	curDifficulty += change;
@@ -401,7 +416,7 @@ function playPreview() {
 	FlxG.sound.music.pause();
 	instPlaying = curSelected;
 
-	player.playingMusic = true;
+	Reflect.setField(player, 'playingMusic', true);
 	player.curTime = 0;
 	player.switchPlayMusic();
 	player.pauseOrResume(true);
@@ -413,7 +428,7 @@ function stopPreview() {
 	FlxG.sound.music.volume = 0;
 	instPlaying = -1;
 
-	player.playingMusic = false;
+	Reflect.setField(player, 'playingMusic', false);
 	player.switchPlayMusic();
 
 	FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
@@ -427,4 +442,26 @@ function enterSong() {
 
 function getCurrentDifficulty() {
 	return curDifficulty;
+}
+
+function onDestroy() {
+	// Stop and clean up preview music if playing
+	if (Reflect.field(player, 'playingMusic')) {
+		stopPreview();
+	}
+	
+	// Cancel any active tweens
+	FlxTween.cancelTweensOf(bg);
+	
+	// Cancel icon tweens
+	for (icon in iconArray) {
+		if (icon != null)
+			FlxTween.cancelTweensOf(icon);
+	}
+	
+	// Clean up references
+	iconArray = null;
+	lastVisibles = null;
+	
+	trace('Freeplay.hx: onDestroy - cleaned up music player, tweens, and references');
 }

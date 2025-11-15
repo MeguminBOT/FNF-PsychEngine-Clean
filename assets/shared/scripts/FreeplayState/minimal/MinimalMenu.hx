@@ -1,10 +1,21 @@
 // Minimal Freeplay - Lightweight performance-focused version
 // No sprite graphics, text-only UI, no animations
-import objects.Alphabet;
-import objects.HealthIcon;
+// @preset:minimal
+import flixel.FlxSprite;
+import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
+import psychlua.HScript.CustomFlxColor as FlxColor;
 import objects.MusicPlayer;
 import options.GameplayChangersSubstate;
 import substates.ResetScoreSubState;
+import backend.WeekData;
+import backend.Highscore;
+import backend.Song;
+import backend.Difficulty;
+import backend.Mods;
+import backend.CoolUtil;
+import backend.Language;
+import states.PlayState;
 
 var curSelected:Int = 0;
 var curDifficulty:Int = 0;
@@ -261,4 +272,16 @@ function enterSong() {
 
 function getCurrentDifficulty() {
 	return curDifficulty;
+}
+
+function onDestroy() {
+	// Stop and clean up preview music if playing
+	if (player.playingMusic) {
+		stopPreview();
+	}
+	
+	// Cancel any active tweens
+	FlxTween.cancelTweensOf(bg);
+	
+	trace('MinimalMenu.hx (Freeplay): onDestroy - cleaned up music player and tweens');
 }

@@ -1,16 +1,6 @@
 package backend;
 
-import flixel.FlxG;
 import flixel.FlxBasic;
-import flixel.FlxSprite;
-import flixel.FlxObject;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.text.FlxText;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
-import flixel.effects.FlxFlicker;
-import flixel.util.FlxAxes;
-import lime.app.Application;
 #if sys
 import sys.FileSystem;
 #end
@@ -18,13 +8,17 @@ import sys.FileSystem;
 import psychlua.*;
 #else
 import psychlua.LuaUtils;
-import psychlua.HScript;
 #end
 #if HSCRIPT_ALLOWED
+import psychlua.HScript;
 import psychlua.HScript.CustomFlxColor;
 import psychlua.HScript.CustomFlxTextBorderStyle;
 import psychlua.HScript.CustomFlxTextAlign;
 import psychlua.HScript.CustomFlxAxes;
+import psychlua.HScript.HScriptInfos;
+import crowplexus.iris.Iris;
+import crowplexus.hscript.Expr.Error as IrisError;
+import crowplexus.hscript.Printer;
 #end
 
 /**
@@ -34,15 +28,39 @@ import psychlua.HScript.CustomFlxAxes;
  * Performance-focused: Direct calls, minimal overhead, reusable objects.
  */
 class ScriptableState extends MusicBeatState {
-	// Scripting
+	public static var instance:ScriptableState;
+
 	#if LUA_ALLOWED public var luaArray:Array<FunkinLua> = []; #end
 	#if HSCRIPT_ALLOWED public var hscriptArray:Array<HScript> = []; #end
 
-	// Script folder to load from (relative to scripts/)
 	public var scriptFolder:String = '';
-
-	// Script subfolder for variants (e.g., "default", "alt", etc.)
 	public var scriptSubfolder:String = '';
+
+	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+	public var debugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
+
+	public function addTextToDebug(text:String, color:FlxColor) {
+		if (debugGroup == null)
+			return;
+
+		var newText:psychlua.DebugLuaText = debugGroup.recycle(psychlua.DebugLuaText);
+		newText.text = text;
+		newText.color = color;
+		newText.disableTime = 6;
+		newText.alpha = 1;
+		newText.setPosition(10, 8 - newText.height);
+
+		var textHeight:Float = newText.height + 2;
+		var debugMembers:Array<psychlua.DebugLuaText> = debugGroup.members;
+		var len:Int = debugMembers.length;
+		for (i in 0...len) {
+			var text:psychlua.DebugLuaText = debugMembers[i];
+			if (text == null || text == newText)
+				continue;
+			text.y += textHeight;
+		}
+	}
+	#end
 
 	// Track objects added after scripts start loading
 	var scriptAddedObjects:Array<FlxBasic> = [];
@@ -62,8 +80,23 @@ class ScriptableState extends MusicBeatState {
 		return result;
 	}
 
-	public inline function createSpriteGroup():FlxTypedGroup<FlxSprite> {
-		return new FlxTypedGroup<FlxSprite>();
+	public inline function createTypedGroup<T:FlxBasic>(type:Class<T>):FlxTypedGroup<T> {
+		return new FlxTypedGroup<T>();
+	}
+
+	override public function create() {
+		instance = this;
+
+		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+		debugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
+		debugGroup.cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]]; // Use top camera
+		#end
+
+		super.create();
+
+		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+		add(debugGroup); // Add after super.create() so it's on top
+		#end
 	}
 
 	/**
@@ -131,20 +164,31 @@ class ScriptableState extends MusicBeatState {
 	/**
 	 * Get available script subfolders for the current scriptFolder.
 	 * Returns array of subfolder names found in both shared and mod directories.
+	 * Protected variants ('psych', 'minimal') can only come from shared directory.
 	 */
 	public function getScriptVariants():Array<String> {
 		var variants:Array<String> = [];
 		#if MODS_ALLOWED
+		var protectedVariants:Array<String> = ['psych', 'minimal'];
 		var basePath:String = 'scripts/' + scriptFolder + '/';
 		var foldersToCheck:Array<String> = [Paths.getSharedPath(basePath)];
 
 		for (mod in Mods.parseList().enabled)
 			foldersToCheck.push(Paths.mods('$mod/' + basePath));
 
-		for (folder in foldersToCheck) {
+		for (i in 0...foldersToCheck.length) {
+			var folder = foldersToCheck[i];
+			var isShared:Bool = (i == 0); // First folder is always shared
+
 			if (FileSystem.exists(folder) && FileSystem.isDirectory(folder)) {
 				for (item in FileSystem.readDirectory(folder)) {
 					var itemPath = folder + item;
+					var itemLower = item.toLowerCase();
+
+					// Protected variants can only be added from shared directory
+					if (protectedVariants.contains(itemLower) && !isShared)
+						continue;
+
 					if (FileSystem.isDirectory(itemPath) && !variants.contains(item))
 						variants.push(item);
 				}
@@ -179,9 +223,12 @@ class ScriptableState extends MusicBeatState {
 			if (obj != null) {
 				trace('  Removing: ' + Type.getClassName(Type.getClass(obj)));
 				remove(obj, true);
+				obj.destroy();
 			}
 		}
-		scriptAddedObjects = []; // Clean up script arrays
+		scriptAddedObjects = [];
+		
+		// Clean up script arrays
 		#if LUA_ALLOWED
 		for (script in luaArray)
 			script.stop();
@@ -193,6 +240,17 @@ class ScriptableState extends MusicBeatState {
 			script.destroy();
 		hscriptArray = [];
 		#end
+
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+		
+		// Force garbage collection to clear memory
+		#if cpp
+		cpp.vm.Gc.run(true);
+		cpp.vm.Gc.compact();
+		#end
+
+		trace('ScriptableState: Memory cleared, loading variant: ' + variant);
 
 		// Set new variant and reload
 		scriptSubfolder = variant;
@@ -211,36 +269,21 @@ class ScriptableState extends MusicBeatState {
 			// State reference
 			script.set('game', this);
 
-			// Core Flixel classes
-			script.set('FlxG', FlxG);
-			script.set('FlxMath', flixel.math.FlxMath);
-			script.set('FlxSprite', FlxSprite);
-			script.set('FlxObject', FlxObject);
-			script.set('FlxTypedGroup', FlxTypedGroup);
-			script.set('FlxSound', flixel.sound.FlxSound);
-			script.set('FlxText', FlxText);
-			script.set('FlxColor', CustomFlxColor);
-			script.set('FlxTextBorderStyle', CustomFlxTextBorderStyle);
-			script.set('FlxTextAlign', CustomFlxTextAlign);
-			script.set('FlxAxes', CustomFlxAxes);
-			script.set('FlxTween', FlxTween);
-			script.set('FlxEase', FlxEase);
-			script.set('FlxFlicker', FlxFlicker);
-
-			// Utility classes
-			script.set('Math', Math);
-			script.set('Type', Type);
-			script.set('Reflect', Reflect);
-			script.set('Paths', Paths);
-			script.set('ClientPrefs', ClientPrefs);
-			script.set('controls', controls);
-			script.set('Application', Application);
-
-			// Script control
+			// Script control constants
 			script.set('Function_Stop', LuaUtils.Function_Stop);
 			script.set('Function_Continue', LuaUtils.Function_Continue);
 
-			trace('ScriptableState: Exposed base objects to HScript: ' + script.origin);
+			// Controls reference
+			script.set('controls', controls);
+
+			// Helper functions - HScript can't parse generic syntax in constructors
+			script.set('createTypedGroup', createTypedGroup);
+
+			// Wrappers for enum imports
+			script.set('FlxTextAlign', CustomFlxTextAlign);
+			script.set('FlxTextBorderStyle', CustomFlxTextBorderStyle);
+			script.set('FlxColor', CustomFlxColor);
+			script.set('FlxAxes', CustomFlxAxes);
 		}
 		#end
 	}

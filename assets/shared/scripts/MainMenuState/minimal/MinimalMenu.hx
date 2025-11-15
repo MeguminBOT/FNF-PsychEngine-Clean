@@ -1,8 +1,12 @@
 // Minimal MainMenu variant - Simple centered list
 // Example of alternative menu script variant
+// @preset:minimal
 import flixel.text.FlxText;
 import flixel.FlxSprite;
 import flixel.util.FlxTimer;
+import psychlua.HScript.CustomFlxColor as FlxColor;
+import psychlua.HScript.CustomFlxTextBorderStyle as FlxTextBorderStyle;
+import psychlua.HScript.CustomFlxTextAlign as FlxTextAlign;
 
 var curSelected:Int = 0;
 var selectedSomethin:Bool = false;
@@ -73,4 +77,10 @@ function onUpdate(elapsed:Float) {
 			game.onItemSelected(optionKeys[curSelected]);
 		});
 	}
+}
+
+function onDestroy() {
+	// Clean up arrays
+	menuItems = null;
+	trace('MinimalMenu.hx: onDestroy - cleaned up');
 }

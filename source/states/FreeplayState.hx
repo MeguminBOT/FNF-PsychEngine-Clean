@@ -269,23 +269,7 @@ class FreeplayState extends ScriptableState {
 
 		#if HSCRIPT_ALLOWED
 		for (script in hscriptArray) {
-			// Freeplay-specific classes
-			script.set('Alphabet', objects.Alphabet);
-			script.set('HealthIcon', HealthIcon);
-			script.set('MusicPlayer', MusicPlayer);
-			script.set('GameplayChangersSubstate', GameplayChangersSubstate);
-			script.set('ResetScoreSubState', ResetScoreSubState);
-
-			// Backend classes
-			script.set('WeekData', WeekData);
-			script.set('Highscore', Highscore);
-			script.set('Song', Song);
-			script.set('Difficulty', backend.Difficulty);
-			script.set('Language', backend.Language);
-			script.set('CoolUtil', backend.CoolUtil);
-			script.set('Mods', backend.Mods);
-
-			// State data
+			// State-specific data only
 			script.set('songs', songs);
 			script.set('curSelected', curSelected);
 			script.set('lastDifficultyName', lastDifficultyName);

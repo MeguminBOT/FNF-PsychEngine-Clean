@@ -1,11 +1,15 @@
-// Default MainMenu behavior script
-// This script handles ALL menu creation, input, and UI updates
-// The base MainMenuState is just a black screen - this script creates everything
+// Default Psych Engine Main Menu, but softcoded.
+// @preset:minimal
+import Reflect;
 import flixel.effects.FlxFlicker;
 import flixel.text.FlxText;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import psychlua.HScript.CustomFlxAxes as FlxAxes;
+import backend.ClientPrefs;
 import lime.app.Application;
 
 // Script-local state management
@@ -18,12 +22,12 @@ var selectedSomethin:Bool = false;
 // Visual elements - script creates and manages these
 var bg:FlxSprite;
 var magenta:FlxSprite;
-var menuItems:FlxTypedGroup;
+var menuItems:FlxTypedGroup; // FlxTypedGroup<FlxSprite> created via createTypedGroup(FlxSprite)
 var leftItem:FlxSprite;
 var rightItem:FlxSprite;
 var camFollow:FlxObject;
 
-// Menu data - fully customizable by scripts
+// Menu data
 var optionShit:Array<Dynamic> = ['story_mode', 'freeplay', 'mods', 'credits'];
 var leftOption:String = 'achievements';
 var rightOption:String = 'options';
@@ -31,7 +35,7 @@ var rightOption:String = 'options';
 function onCreate() {
 	trace('MainMenu.hx: onCreate called!');
 
-	menuItems = game.createSpriteGroup();
+	menuItems = createTypedGroup(FlxSprite);
 	game.add(menuItems);
 
 	camFollow = new FlxObject(0, 0, 1, 1);
@@ -225,4 +229,26 @@ function getCurrentOption():String {
 	if (curColumn == 2 && rightItem != null)
 		return rightOption;
 	return optionShit[curSelected];
+}
+
+function onDestroy() {
+	// Cancel any active tweens
+	FlxTween.cancelTweensOf(bg);
+	FlxTween.cancelTweensOf(magenta);
+	
+	// Cancel tweens on menu items
+	var members:Array<Dynamic> = Reflect.field(menuItems, 'members');
+	for (i in 0...members.length) {
+		var memb:FlxSprite = members[i];
+		if (memb != null)
+			FlxTween.cancelTweensOf(memb);
+	}
+	
+	// Clean up references
+	if (leftItem != null)
+		FlxTween.cancelTweensOf(leftItem);
+	if (rightItem != null)
+		FlxTween.cancelTweensOf(rightItem);
+	
+	trace('MainMenu.hx: onDestroy - cleaned up tweens and references');
 }
