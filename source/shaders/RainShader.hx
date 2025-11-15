@@ -353,7 +353,6 @@ class RainShader extends FlxShader
 				gl_FragColor = vec4(color, 1);
 			}
 		")
-
 	static final MAX_LIGHTS:Int = 8;
 
 	public var lights:Array<

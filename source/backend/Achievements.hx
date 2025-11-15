@@ -28,7 +28,8 @@ enum abstract AchievementOp(String)
 	var ADD = 'add';
 }
 
-class Achievements {
+class Achievements
+{
 	public static function init()
 	{
 		createAchievement('friday_night_play',		{name: "Freaky on a Friday Night", description: "Play on a Friday... Night.", hidden: true});

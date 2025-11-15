@@ -176,14 +176,12 @@ class RGBPaletteShader extends FlxShader
 			}
 			return vec4(0.0, 0.0, 0.0, 0.0);
 		}')
-
 	@:glFragmentSource('
 		#pragma header
 
 		void main() {
 			gl_FragColor = flixel_texture2DCustom(bitmap, openfl_TextureCoordv);
 		}')
-
 	public function new()
 	{
 		super();

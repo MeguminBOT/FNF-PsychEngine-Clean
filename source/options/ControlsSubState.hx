@@ -144,7 +144,8 @@ class ControlsSubState extends MusicBeatSubstate
 					if (isDefaultKey)
 						str = Language.getPhrase(str);
 
-					var text:Alphabet = new Alphabet(475, 300, !isDisplayKey ? Language.getPhrase('key_$keyStr', str) : Language.getPhrase('keygroup_$str', str), !isDisplayKey);
+					var text:Alphabet = new Alphabet(475, 300,
+						!isDisplayKey ? Language.getPhrase('key_$keyStr', str) : Language.getPhrase('keygroup_$str', str), !isDisplayKey);
 					text.isMenuItem = true;
 					text.changeX = false;
 					text.distancePerItem.y = 60;
@@ -300,9 +301,12 @@ class ControlsSubState extends MusicBeatSubstate
 				|| FlxG.gamepads.anyJustPressed(RIGHT_SHOULDER))
 				swapMode();
 
-			if (FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT
-				|| FlxG.gamepads.anyJustPressed(DPAD_LEFT) || FlxG.gamepads.anyJustPressed(DPAD_RIGHT)
-				|| FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_LEFT) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_RIGHT))
+			if (FlxG.keys.justPressed.LEFT
+				|| FlxG.keys.justPressed.RIGHT
+				|| FlxG.gamepads.anyJustPressed(DPAD_LEFT)
+				|| FlxG.gamepads.anyJustPressed(DPAD_RIGHT)
+				|| FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_LEFT)
+				|| FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_RIGHT))
 				updateAlt(true);
 
 			if (FlxG.keys.justPressed.UP || FlxG.gamepads.anyJustPressed(DPAD_UP) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_UP))

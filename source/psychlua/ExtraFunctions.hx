@@ -66,7 +66,6 @@ class ExtraFunctions
 			return Reflect.getProperty(controller.justReleased, name) == true;
 		});
 
-
 		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '')
 		{
 			name = name.toLowerCase().trim();
@@ -123,7 +122,6 @@ class ExtraFunctions
 			}
 			return false;
 		});
-
 
 		// Save data management
 		Lua_helper.add_callback(lua, "initSaveData", function(name:String, ?folder:String = 'psychenginemods')
@@ -187,7 +185,6 @@ class ExtraFunctions
 			}
 			FunkinLua.luaTrace('eraseSaveData: Save file not initialized: ' + name, false, false, FlxColor.RED);
 		});
-
 
 		// File management
 		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false)
@@ -268,7 +265,6 @@ class ExtraFunctions
 			return list;
 		});
 
-
 		// String tools
 		Lua_helper.add_callback(lua, "stringStartsWith", function(str:String, start:String)
 		{
@@ -289,7 +285,6 @@ class ExtraFunctions
 		{
 			return str.trim();
 		});
-
 
 		// Randomization
 		Lua_helper.add_callback(lua, "getRandomInt", function(min:Int, max:Int = FlxMath.MAX_VALUE_INT, exclude:String = '')
@@ -322,6 +317,5 @@ class ExtraFunctions
 		{
 			return FlxG.random.bool(chance);
 		});
-
 	}
 }

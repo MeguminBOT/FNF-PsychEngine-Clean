@@ -2247,7 +2247,6 @@ class StageEditorAnimationSubstate extends MusicBeatSubstate
 			animationIndicesInputText.text = indicesStr.substr(1, indicesStr.length - 2);
 		});
 
-
 		mainAnimTxt = new FlxText(160, animationDropDown.y - 18, 0, 'Main Anim.: ');
 		var initAnimButton:PsychUIButton = new PsychUIButton(160, animationDropDown.y, 'Main Animation', function()
 		{
@@ -2315,7 +2314,6 @@ class StageEditorAnimationSubstate extends MusicBeatSubstate
 			trace('Added/Updated animation: ' + animationInputText.text);
 		});
 
-
 		var removeButton:PsychUIButton = new PsychUIButton(160, animationIndicesInputText.y + 35, 'Remove', function()
 		{
 			for (anim in target.animations)
@@ -2348,7 +2346,6 @@ class StageEditorAnimationSubstate extends MusicBeatSubstate
 				}
 			}
 		});
-
 
 		tab_group.add(new FlxText(animationDropDown.x, animationDropDown.y - 18, 0, 'Animations:'));
 		tab_group.add(new FlxText(animationInputText.x, animationInputText.y - 18, 0, 'Animation name:'));

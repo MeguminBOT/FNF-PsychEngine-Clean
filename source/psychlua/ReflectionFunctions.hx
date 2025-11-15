@@ -224,7 +224,6 @@ class ReflectionFunctions
 			}
 		});
 
-
 		Lua_helper.add_callback(lua, "callMethod", function(funcToRun:String, ?args:Array<Dynamic>)
 		{
 			var parent:Dynamic = PlayState.instance;
@@ -248,7 +247,6 @@ class ReflectionFunctions
 		{
 			return callMethodFromObject(Type.resolveClass(className), funcToRun, parseInstances(args));
 		});
-
 
 		Lua_helper.add_callback(lua, "createInstance", function(variableToSave:String, className:String, ?args:Array<Dynamic>)
 		{
@@ -307,7 +305,6 @@ class ReflectionFunctions
 				retStr += '::$className';
 			return retStr;
 		});
-
 	}
 
 	static function parseInstanceArray(arg:Array<Dynamic>)

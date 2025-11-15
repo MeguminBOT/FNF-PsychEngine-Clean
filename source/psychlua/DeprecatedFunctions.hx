@@ -16,7 +16,6 @@ class DeprecatedFunctions
 			return LuaUtils.addAnimByIndices(obj, name, prefix, indices, framerate, true);
 		});
 
-
 		Lua_helper.add_callback(lua, "objectPlayAnimation", function(obj:String, name:String, forced:Bool = false, ?startFrame:Int = 0)
 		{
 			FunkinLua.luaTrace("objectPlayAnimation is deprecated! Use playAnim instead", false, true);
@@ -203,6 +202,5 @@ class DeprecatedFunctions
 			Reflect.getProperty(LuaUtils.getTargetInstance(), group)[index].updateHitbox();
 			FunkinLua.luaTrace('updateHitboxFromGroup is deprecated! Use updateHitbox instead.', false, true);
 		});
-
 	}
 }
