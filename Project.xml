@@ -172,7 +172,13 @@
 	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER" />
 	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER" />
 	<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER" />
-	
+	<!-- <haxedef name="HXCPP_GC_MOVING"/> -->
+	<!-- <haxedef name="HXCPP_GC_SUMMARY"/> -->
+	<!-- <haxedef name="HXCPP_GC_DYNAMIC_SIZE"/> -->
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
+	<!-- <haxedef name="HXCPP-CLANG"/> -->
+	<!-- <haxedef name="HXCPP_GC_GENERATIONAL"/> -->
+	<!-- <haxedef name="force_native_property"/> -->
 	<!--Disable deprecated warnings-->
 	<haxedef name='no-deprecation-warnings' />
 
