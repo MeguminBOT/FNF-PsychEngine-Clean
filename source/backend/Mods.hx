@@ -86,8 +86,9 @@ class Mods
 			paths.insert(0, defaultPath);
 		}
 
-		for (file in paths)
+		for (i in 0...paths.length)
 		{
+			final file = paths[i];
 			var list:Array<String> = CoolUtil.coolTextFile(file);
 			for (value in list)
 				if ((allowDuplicates || !mergedList.contains(value)) && value.length > 0)
@@ -244,8 +245,9 @@ class Mods
 
 		// Now save file
 		var fileStr:String = '';
-		for (values in list)
+		for (i in 0...list.length)
 		{
+			final values = list[i];
 			if (fileStr.length > 0)
 				fileStr += '\n';
 			fileStr += values[0] + '|' + (values[1] ? '1' : '0');

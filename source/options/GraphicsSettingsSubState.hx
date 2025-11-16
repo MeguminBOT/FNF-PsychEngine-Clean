@@ -60,8 +60,9 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 	function onChangeAntiAliasing()
 	{
-		for (sprite in members)
+		for (i in 0...members.length)
 		{
+			final sprite = members[i];
 			var sprite:FlxSprite = cast sprite;
 			if (sprite != null && (sprite is FlxSprite) && !(sprite is FlxText))
 			{

@@ -73,7 +73,9 @@ class MusicBeatSubstate extends FlxSubState
 		curSection = 0;
 		stepsToDo = 0;
 		var notes = PlayState.SONG.notes;
-		for (i in 0...notes.length)
+		var len = notes.length;
+		var i = 0;
+		while (i < len)
 		{
 			if (notes[i] != null)
 			{
@@ -83,6 +85,7 @@ class MusicBeatSubstate extends FlxSubState
 
 				curSection++;
 			}
+			i++;
 		}
 
 		if (curSection > lastSection)
@@ -99,9 +102,13 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		var lastChange = Conductor.getBPMFromSeconds(Conductor.songPosition);
 
-		var shit = ((Conductor.songPosition - ClientPrefs.data.noteOffset) - lastChange.songTime) / lastChange.stepCrochet;
-		curDecStep = lastChange.stepTime + shit;
-		curStep = lastChange.stepTime + Math.floor(shit);
+		var songTime:Float = lastChange.songTime;
+		var stepCrochet:Float = lastChange.stepCrochet;
+		var stepTime:Float = lastChange.stepTime;
+
+		var shit = ((Conductor.songPosition - ClientPrefs.data.noteOffset) - songTime) / stepCrochet;
+		curDecStep = stepTime + shit;
+		curStep = Std.int(stepTime + Math.floor(shit));
 	}
 
 	public function stepHit():Void
@@ -123,8 +130,16 @@ class MusicBeatSubstate extends FlxSubState
 	function getBeatsOnSection()
 	{
 		var val:Null<Float> = 4;
-		if (PlayState.SONG != null && PlayState.SONG.notes[curSection] != null)
-			val = PlayState.SONG.notes[curSection].sectionBeats;
+		if (PlayState.SONG != null)
+		{
+			var notes = PlayState.SONG.notes;
+			if (notes != null)
+			{
+				var section = notes[curSection];
+				if (section != null)
+					val = section.sectionBeats;
+			}
+		}
 		return val == null ? 4 : val;
 	}
 }

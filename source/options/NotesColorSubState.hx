@@ -461,8 +461,9 @@ class NotesColorSubState extends MusicBeatSubstate
 			else if (pointerY() >= hexTypeLine.y && pointerY() < hexTypeLine.y + hexTypeLine.height && Math.abs(pointerX() - 1000) <= 84)
 			{
 				hexTypeNum = 0;
-				for (letter in alphabetHex.letters)
+				for (i in 0...alphabetHex.letters.length)
 				{
+					final letter = alphabetHex.letters[i];
 					if (letter.x - letter.offset.x + letter.width <= pointerX())
 						hexTypeNum++;
 					else
@@ -724,8 +725,10 @@ class NotesColorSubState extends MusicBeatSubstate
 		for (note in modeNotes)
 			note.alpha = (curSelectedMode == note.ID) ? 1 : 0.6;
 
-		for (note in myNotes)
+		final myNotesMembers = myNotes.members;
+		for (i in 0...myNotesMembers.length)
 		{
+			final note = myNotesMembers[i];
 			var newAnim:String = curSelectedNote == note.ID ? 'confirm' : 'pressed';
 			note.alpha = (curSelectedNote == note.ID) ? 1 : 0.6;
 			if (note.animation.curAnim == null || note.animation.curAnim.name != newAnim)

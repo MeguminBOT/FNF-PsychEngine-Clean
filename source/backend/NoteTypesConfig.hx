@@ -26,8 +26,9 @@ class NoteTypesConfig
 
 		var parsed:Array<NoteTypeProperty> = [];
 		var lines:Array<String> = CoolUtil.listFromString(str);
-		for (line in lines)
+		for (i in 0...lines.length)
 		{
+			final line = lines[i];
 			var sep:Int = line.indexOf(':');
 			if (sep < 0)
 			{
@@ -35,11 +36,9 @@ class NoteTypesConfig
 				if (sep < 0)
 					continue;
 			}
-
 			var arr:Array<String> = line.substr(0, sep).trim().split('.');
 			for (i in 0...arr.length)
 				arr[i] = arr[i].trim();
-
 			var newProp:NoteTypeProperty = {
 				property: arr,
 				value: _interpretValue(line.substr(sep + 1).trim())
@@ -57,8 +56,9 @@ class NoteTypesConfig
 		if (data == null || data.length < 1)
 			return;
 
-		for (line in data)
+		for (i in 0...data.length)
 		{
+			final line = data[i];
 			var obj:Dynamic = note;
 			var split:Array<String> = line.property;
 			try
@@ -68,17 +68,14 @@ class NoteTypesConfig
 					_propCheckArray(obj, split[0], true, line.value);
 					continue;
 				}
-
 				switch (split[0]) // special cases
 				{
 					case 'extraData':
 						note.extraData.set(split[1], line.value);
 						continue;
-
 					case 'noteType':
 						continue;
 				}
-
 				for (i in 0...split.length - 1)
 				{
 					if (i < split.length - 1)

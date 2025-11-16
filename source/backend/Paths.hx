@@ -88,8 +88,9 @@ class Paths
 				if (grp != null)
 				{
 					// trace('is actually a group');
-					for (member in grp)
+					for (i in 0...grp.length)
 					{
+						final member = grp[i];
 						checkForGraphics(member);
 					}
 					return;

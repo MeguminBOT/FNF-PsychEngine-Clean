@@ -101,23 +101,28 @@ class Song
 		if (sectionsData == null)
 			return;
 
-		for (section in sectionsData)
+		for (i in 0...sectionsData.length)
 		{
+			final section = sectionsData[i];
 			var beats:Null<Float> = cast section.sectionBeats;
-			if (beats == null || Math.isNaN(beats))
-			{
+			if (beats == null || Math.isNaN(beats)) {
 				section.sectionBeats = 4;
 				if (Reflect.hasField(section, 'lengthInSteps'))
 					Reflect.deleteField(section, 'lengthInSteps');
 			}
 
-			for (note in section.sectionNotes)
+			var sectionNotes = section.sectionNotes;
+			var notesLen:Int = sectionNotes.length;
+			var i:Int = 0;
+			while (i < notesLen)
 			{
+				final note:Array<Dynamic> = sectionNotes[i];
 				var gottaHitNote:Bool = (note[1] < 4) ? section.mustHitSection : !section.mustHitSection;
 				note[1] = (note[1] % 4) + (gottaHitNote ? 0 : 4);
 
 				if (!Std.isOfType(note[3], String))
-					note[3] = Note.defaultNoteTypes[note[3]]; // compatibility with Week 7 and 0.1-0.3 psych charts
+					note[3] = Note.defaultNoteTypes[Std.int(note[3])]; // compatibility with Week 7 and 0.1-0.3 psych charts
+				i++;
 			}
 		}
 	}

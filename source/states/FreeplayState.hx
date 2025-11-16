@@ -90,8 +90,9 @@ class FreeplayState extends MusicBeatState
 			}
 
 			WeekData.setDirectoryFromWeek(leWeek);
-			for (song in leWeek.songs)
+			for (i in 0...leWeek.songs.length)
 			{
+				final song:Array<Dynamic> = leWeek.songs[i];
 				var colors:Array<Int> = song[2];
 				if (colors == null || colors.length < 3)
 				{
@@ -591,11 +592,13 @@ class FreeplayState extends MusicBeatState
 	public function updateTexts(elapsed:Float = 0.0)
 	{
 		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));
-		for (i in _lastVisibles)
+		for (i in 0..._lastVisibles.length)
 		{
+			final i = _lastVisibles[i];
 			grpSongs.members[i].visible = grpSongs.members[i].active = false;
 			iconArray[i].visible = iconArray[i].active = false;
 		}
+
 		_lastVisibles = [];
 
 		var min:Int = Math.round(Math.max(0, Math.min(songs.length, lerpSelected - _drawDistance)));

@@ -85,8 +85,9 @@ class DialogueCharacter extends FlxSprite
 		dialogueAnimations.clear();
 		if (jsonFile.animations != null && jsonFile.animations.length > 0)
 		{
-			for (anim in jsonFile.animations)
+			for (i in 0...jsonFile.animations.length)
 			{
+				final anim = jsonFile.animations[i];
 				animation.addByPrefix(anim.anim, anim.loop_name, 24, isGhost);
 				animation.addByPrefix(anim.anim + IDLE_POSTFIX, anim.idle_name, 24, true);
 				dialogueAnimations.set(anim.anim, anim);
@@ -100,8 +101,9 @@ class DialogueCharacter extends FlxSprite
 		if (animName == null || !dialogueAnimations.exists(animName))
 		{ // Anim is null, get a random animation
 			var arrayAnims:Array<String> = [];
-			for (anim in dialogueAnimations)
+			for (key in dialogueAnimations.keys())
 			{
+				final anim = dialogueAnimations.get(key);
 				arrayAnims.push(anim.anim);
 			}
 			if (arrayAnims.length > 0)

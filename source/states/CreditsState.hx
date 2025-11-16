@@ -302,8 +302,9 @@ class CreditsState extends MusicBeatState
 			}
 		}
 
-		for (item in grpOptions.members)
+		for (i in 0...grpOptions.members.length)
 		{
+			final item = grpOptions.members[i];
 			if (!item.bold)
 			{
 				var lerpVal:Float = Math.exp(-elapsed * 12);
@@ -386,8 +387,9 @@ class CreditsState extends MusicBeatState
 			|| #end FileSystem.exists(creditsFile))
 		{
 			var firstarray:Array<String> = File.getContent(creditsFile).split('\n');
-			for (i in firstarray)
+			for (i in 0...firstarray.length)
 			{
+				final i = firstarray[i];
 				var arr:Array<String> = i.replace('\\n', '\n').split("::");
 				if (arr.length >= 5)
 					arr.push(folder);

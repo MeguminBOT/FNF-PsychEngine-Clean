@@ -171,8 +171,9 @@ class Controls
 	{
 		if (keys != null)
 		{
-			for (key in keys)
+			for (i in 0...keys.length)
 			{
+				final key = keys[i];
 				if (FlxG.gamepads.anyJustPressed(key) == true)
 				{
 					controllerMode = true;
@@ -187,8 +188,9 @@ class Controls
 	{
 		if (keys != null)
 		{
-			for (key in keys)
+			for (i in 0...keys.length)
 			{
+				final key = keys[i];
 				if (FlxG.gamepads.anyPressed(key) == true)
 				{
 					controllerMode = true;
@@ -203,8 +205,9 @@ class Controls
 	{
 		if (keys != null)
 		{
-			for (key in keys)
+			for (i in 0...keys.length)
 			{
+				final key = keys[i];
 				if (FlxG.gamepads.anyJustReleased(key) == true)
 				{
 					controllerMode = true;

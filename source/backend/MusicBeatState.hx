@@ -96,10 +96,13 @@ class MusicBeatState extends FlxState
 	{
 		if (stepsToDo < 1)
 			stepsToDo = Math.round(getBeatsOnSection() * 4);
+
 		while (curStep >= stepsToDo)
 		{
 			curSection++;
-			stepsToDo += Math.round(getBeatsOnSection() * 4);
+			var beats = getBeatsOnSection();
+			var stepsToAdd = Math.round(beats * 4);
+			stepsToDo += stepsToAdd;
 			sectionHit();
 		}
 	}
@@ -113,16 +116,18 @@ class MusicBeatState extends FlxState
 		curSection = 0;
 		stepsToDo = 0;
 		var notes = PlayState.SONG.notes;
-		for (i in 0...notes.length)
+		var len = notes.length;
+		var i = 0;
+		while (i < len)
 		{
 			if (notes[i] != null)
 			{
 				stepsToDo += Math.round(getBeatsOnSection() * 4);
 				if (stepsToDo > curStep)
 					break;
-
 				curSection++;
 			}
+			i++;
 		}
 
 		if (curSection > lastSection)
@@ -139,9 +144,13 @@ class MusicBeatState extends FlxState
 	{
 		var lastChange = Conductor.getBPMFromSeconds(Conductor.songPosition);
 
-		var shit = ((Conductor.songPosition - ClientPrefs.data.noteOffset) - lastChange.songTime) / lastChange.stepCrochet;
-		curDecStep = lastChange.stepTime + shit;
-		curStep = lastChange.stepTime + Math.floor(shit);
+		var songTime:Float = lastChange.songTime;
+		var stepCrochet:Float = lastChange.stepCrochet;
+		var stepTime:Float = lastChange.stepTime;
+
+		var shit = ((Conductor.songPosition - ClientPrefs.data.noteOffset) - songTime) / stepCrochet;
+		curDecStep = stepTime + shit;
+		curStep = Std.int(stepTime + Math.floor(shit));
 	}
 
 	public static function switchState(nextState:FlxState = null)
@@ -226,16 +235,31 @@ class MusicBeatState extends FlxState
 
 	function stagesFunc(func:BaseStage->Void)
 	{
-		for (stage in stages)
+		var stagesArray = stages;
+		var len = stagesArray.length;
+		var i = 0;
+		while (i < len)
+		{
+			var stage = stagesArray[i];
 			if (stage != null && stage.exists && stage.active)
 				func(stage);
+			i++;
+		}
 	}
 
 	function getBeatsOnSection()
 	{
 		var val:Null<Float> = 4;
-		if (PlayState.SONG != null && PlayState.SONG.notes[curSection] != null)
-			val = PlayState.SONG.notes[curSection].sectionBeats;
+		if (PlayState.SONG != null)
+		{
+			var notes = PlayState.SONG.notes;
+			if (notes != null)
+			{
+				var section = notes[curSection];
+				if (section != null)
+					val = section.sectionBeats;
+			}
+		}
 		return val == null ? 4 : val;
 	}
 }

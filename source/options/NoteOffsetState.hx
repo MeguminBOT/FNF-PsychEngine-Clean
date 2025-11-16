@@ -95,8 +95,9 @@ class NoteOffsetState extends MusicBeatState
 		}
 
 		var daLoop:Int = 0;
-		for (i in seperatedScore)
+		for (i in 0...seperatedScore.length)
 		{
+			final i = seperatedScore[i];
 			var numScore:FlxSprite = new FlxSprite(43 * daLoop).loadGraphic(Paths.image('num' + i));
 			numScore.cameras = [camHUD];
 			numScore.antialiasing = ClientPrefs.data.antialiasing;

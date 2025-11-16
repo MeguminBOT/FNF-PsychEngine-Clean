@@ -76,8 +76,9 @@ class TypedAlphabet extends Alphabet
 		_curLetter = -1;
 		finishedText = false;
 		_timeToUpdate = 0;
-		for (letter in letters)
+		for (i in 0...letters.length)
 		{
+			final letter = letters[i];
 			letter.visible = false;
 		}
 	}

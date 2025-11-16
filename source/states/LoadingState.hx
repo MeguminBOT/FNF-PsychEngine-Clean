@@ -568,16 +568,20 @@ class LoadingState extends MusicBeatState
 
 					if (stageData.objects != null)
 					{
-						for (sprite in stageData.objects)
+						var objects = stageData.objects;
+						var len:Int = objects.length;
+						var i:Int = 0;
+						while (i < len)
 						{
+							final sprite = objects[i];
 							if (sprite.type == 'sprite' || sprite.type == 'animatedSprite')
 								if ((sprite.filters < 0 || StageData.validateVisibility(sprite.filters)) && !imgs.contains(sprite.image))
 									imgs.push(sprite.image);
+							i++;
 						}
 					}
 					prepare(imgs, snds, mscs);
 				}
-
 				songsToPrepare.push('$folder/Inst');
 
 				var player1:String = song.player1;
@@ -785,8 +789,9 @@ class LoadingState extends MusicBeatState
 			if (!isAnimateAtlas)
 			{
 				var split:Array<String> = img.split(',');
-				for (file in split)
+				for (i in 0...split.length)
 				{
+					final file = split[i];
 					imagesToPrepare.push(file.trim());
 				}
 			}
