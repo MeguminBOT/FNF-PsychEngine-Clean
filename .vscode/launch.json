@@ -1,0 +1,20 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Haxe: Debug Windows",
+			"type": "hxcpp",
+			"request": "launch",
+			"program": "${workspaceFolder}/export/debug/windows/bin/PsychEngine.exe",
+			"cwd": "${workspaceFolder}",
+			"preLaunchTask": "lime: build windows -debug"
+		},
+		{
+			"name": "Haxe: Debug Windows (No Build)",
+			"type": "hxcpp",
+			"request": "launch",
+			"program": "${workspaceFolder}/export/debug/windows/bin/PsychEngine.exe",
+			"cwd": "${workspaceFolder}"
+		}
+	]
+}
