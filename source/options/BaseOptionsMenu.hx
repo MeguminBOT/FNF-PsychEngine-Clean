@@ -517,10 +517,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			if (item.targetY == 0)
 				item.alpha = 1;
 		}
-		final grpTextsMembers = grpTexts.members;
-		for (i in 0...grpTextsMembers.length)
+		for (text in grpTexts)
 		{
-			final text = grpTextsMembers[i];
 			text.alpha = 0.6;
 			if (text.ID == curSelected)
 				text.alpha = 1;

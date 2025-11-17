@@ -26,14 +26,10 @@ class Conductor
 
 	public static function judgeNote(arr:Array<Rating>, diff:Float = 0):Rating // die
 	{
-		var len = arr.length - 1;
-		var i = 0;
-		while (i < len)
-		{
+		for (i in 0...arr.length - 1) // skips last window (Shit)
 			if (diff <= arr[i].hitWindow)
 				return arr[i];
-			i++;
-		}
+
 		return arr[arr.length - 1];
 	}
 
@@ -51,15 +47,10 @@ class Conductor
 			bpm: bpm,
 			stepCrochet: stepCrochet
 		}
-		var changes = bpmChangeMap;
-		var len = changes.length;
-		var i = 0;
-		while (i < len)
+		for (i in 0...Conductor.bpmChangeMap.length)
 		{
-			var change = changes[i];
-			if (time >= change.songTime)
-				lastChange = change;
-			i++;
+			if (time >= Conductor.bpmChangeMap[i].songTime)
+				lastChange = Conductor.bpmChangeMap[i];
 		}
 
 		return lastChange;
@@ -73,15 +64,10 @@ class Conductor
 			bpm: bpm,
 			stepCrochet: stepCrochet
 		}
-		var changes = bpmChangeMap;
-		var len = changes.length;
-		var i = 0;
-		while (i < len)
+		for (i in 0...Conductor.bpmChangeMap.length)
 		{
-			var change = changes[i];
-			if (change.stepTime <= step)
-				lastChange = change;
-			i++;
+			if (Conductor.bpmChangeMap[i].stepTime <= step)
+				lastChange = Conductor.bpmChangeMap[i];
 		}
 
 		return lastChange;
@@ -124,15 +110,11 @@ class Conductor
 		var curBPM:Float = song.bpm;
 		var totalSteps:Int = 0;
 		var totalPos:Float = 0;
-		var notes = song.notes;
-		var len = notes.length;
-		var i = 0;
-		while (i < len)
+		for (i in 0...song.notes.length)
 		{
-			var section = notes[i];
-			if (section.changeBPM && section.bpm != curBPM)
+			if (song.notes[i].changeBPM && song.notes[i].bpm != curBPM)
 			{
-				curBPM = section.bpm;
+				curBPM = song.notes[i].bpm;
 				var event:BPMChangeEvent = {
 					stepTime: totalSteps,
 					songTime: totalPos,
@@ -145,7 +127,6 @@ class Conductor
 			var deltaSteps:Int = Math.round(getSectionBeats(song, i) * 4);
 			totalSteps += deltaSteps;
 			totalPos += ((60 / curBPM) * 1000 / 4) * deltaSteps;
-			i++;
 		}
 		trace("new BPM map BUDDY " + bpmChangeMap);
 	}

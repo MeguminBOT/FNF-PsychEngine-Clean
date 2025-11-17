@@ -62,9 +62,8 @@ class Alphabet extends FlxSpriteGroup
 
 	private function updateAlignment()
 	{
-		for (i in 0...letters.length)
+		for (letter in letters)
 		{
-			final letter = letters[i];
 			var newOffset:Float = 0;
 			switch (alignment)
 			{
@@ -75,6 +74,7 @@ class Alphabet extends FlxSpriteGroup
 				default:
 					newOffset = 0;
 			}
+
 			letter.offset.x -= letter.alignOffset;
 			letter.alignOffset = newOffset * scale.x;
 			letter.offset.x += letter.alignOffset;
@@ -154,9 +154,8 @@ class Alphabet extends FlxSpriteGroup
 		if (ratioY == null)
 			ratioY = ratioX;
 
-		for (i in 0...letters.length)
+		for (letter in letters)
 		{
-			final letter = letters[i];
 			if (letter != null)
 			{
 				letter.setupAlphaCharacter((letter.x - x) * ratioX + x, (letter.y - y) * ratioY + y);
@@ -247,9 +246,8 @@ class Alphabet extends FlxSpriteGroup
 			}
 		}
 
-		for (i in 0...letters.length)
+		for (letter in letters)
 		{
-			final letter = letters[i];
 			letter.rowWidth = rowData[letter.row] / scale.x;
 		}
 

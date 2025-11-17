@@ -102,8 +102,7 @@ class StageData
 
 	public static var reservedNames:Array<String> = ['gf', 'gfGroup', 'dad', 'dadGroup', 'boyfriend', 'boyfriendGroup']; // blocks these names from being used on stage editor's name input text
 
-	public static function addObjectsToState(objectList:Array<Dynamic>, gf:FlxSprite, dad:FlxSprite, boyfriend:FlxSprite, ?group:Dynamic = null,
-			?ignoreFilters:Bool = false)
+	public static function addObjectsToState(objectList:Array<Dynamic>, gf:FlxSprite, dad:FlxSprite, boyfriend:FlxSprite, ?group:Dynamic = null, ?ignoreFilters:Bool = false)
 	{
 		var addedObjects:Map<String, FlxSprite> = [];
 		for (num => data in objectList)
@@ -168,9 +167,8 @@ class StageData
 									spr.playAnim(anim.anim, true);
 							}
 						}
-						for (i in 0...['antialiasing', 'flipX', 'flipY'].length)
+						for (varName in ['antialiasing', 'flipX', 'flipY'])
 						{
-							final varName = ['antialiasing', 'flipX', 'flipY'][i];
 							var dat:Dynamic = Reflect.getProperty(data, varName);
 							if (dat != null)
 								Reflect.setProperty(spr, varName, dat);
@@ -192,9 +190,8 @@ class StageData
 					spr.scrollFactor.set(data.scroll[0], data.scroll[1]);
 					spr.color = CoolUtil.colorFromString(data.color);
 
-					for (i in 0...['alpha', 'angle'].length)
+					for (varName in ['alpha', 'angle'])
 					{
-						final varName = ['alpha', 'angle'][i];
 						var dat:Dynamic = Reflect.getProperty(data, varName);
 						if (dat != null)
 							Reflect.setProperty(spr, varName, dat);

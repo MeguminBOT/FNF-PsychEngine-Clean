@@ -30,12 +30,12 @@ class ModSettingsSubState extends BaseOptionsMenu
 		// save = []; //reset for debug purposes
 		try
 		{
-			for (i in 0...options.length)
+			for (option in options)
 			{
-				final option = options[i];
 				var newOption = new Option(option.name != null ? option.name : option.save,
 					option.description != null ? option.description : 'No description provided.', option.save, convertType(option.type), option.options,
 					option.translation_key);
+
 				switch (newOption.type)
 				{
 					case KEYBIND:
@@ -46,6 +46,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 							keyboardStr = 'NONE';
 						if (gamepadStr == null)
 							gamepadStr = 'NONE';
+
 						newOption.defaultKeys.keyboard = keyboardStr;
 						newOption.defaultKeys.gamepad = gamepadStr;
 						if (save.get(option.save) == null)
@@ -54,10 +55,12 @@ class ModSettingsSubState extends BaseOptionsMenu
 							newOption.keys.gamepad = newOption.defaultKeys.gamepad;
 							save.set(option.save, newOption.keys);
 						}
+
 						// getting inputs and checking
 						var keyboardKey:FlxKey = cast FlxKey.fromString(keyboardStr);
 						var gamepadKey:FlxGamepadInputID = cast FlxGamepadInputID.fromString(gamepadStr);
 						// trace('${keyboardStr}: $keyboardKey, ${gamepadStr}: $gamepadKey');
+
 						@:privateAccess
 						{
 							newOption.getValue = function()
@@ -72,6 +75,7 @@ class ModSettingsSubState extends BaseOptionsMenu
 								var data = save.get(newOption.variable);
 								if (data == null)
 									data = {keyboard: 'NONE', gamepad: 'NONE'};
+
 								if (!controls.controllerMode)
 									data.keyboard = value;
 								else
@@ -79,16 +83,19 @@ class ModSettingsSubState extends BaseOptionsMenu
 								save.set(newOption.variable, data);
 							};
 						}
+
 					default:
 						if (option.value != null)
 							newOption.defaultValue = option.value;
+
 						@:privateAccess
 						{
 							newOption.getValue = function() return save.get(newOption.variable);
 							newOption.setValue = function(value:Dynamic) save.set(newOption.variable, value);
 						}
 				}
-				if (newOption.type != KEYBIND)
+
+				if (option.type != KEYBIND)
 				{
 					if (option.format != null)
 						newOption.displayFormat = option.format;
@@ -98,10 +105,12 @@ class ModSettingsSubState extends BaseOptionsMenu
 						newOption.maxValue = option.max;
 					if (option.step != null)
 						newOption.changeValue = option.step;
+
 					if (option.scroll != null)
 						newOption.scrollSpeed = option.scroll;
 					if (option.decimals != null)
 						newOption.decimals = option.decimals;
+
 					var myValue:Dynamic = null;
 					if (save.get(option.save) != null)
 					{
@@ -117,14 +126,17 @@ class ModSettingsSubState extends BaseOptionsMenu
 						if (myValue == null)
 							myValue = newOption.defaultValue;
 					}
+
 					switch (newOption.type)
 					{
 						case STRING:
 							var num:Int = newOption.options.indexOf(myValue);
 							if (num > -1)
 								newOption.curOption = num;
+
 						default:
 					}
+
 					save.set(option.save, myValue);
 				}
 				addOption(newOption);

@@ -183,9 +183,8 @@ class Achievements
 
 	public static function startPopup(achieve:String, endFunc:Void->Void = null)
 	{
-		for (i in 0..._popups.length)
+		for (popup in _popups)
 		{
-			final popup = _popups[i];
 			if (popup == null)
 				continue;
 			popup.intendedY += 150;

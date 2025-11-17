@@ -74,9 +74,8 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 	public function getOptionByName(name:String)
 	{
-		for (i in 0...optionsArray.length)
+		for (i in optionsArray)
 		{
-			final i = optionsArray[i];
 			var opt:GameplayOption = i;
 			if (opt.name == name)
 				return opt;
@@ -345,9 +344,8 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 			if (item.targetY == 0)
 				item.alpha = 1;
 		}
-		for (i in 0...grpTexts.members.length)
+		for (text in grpTexts)
 		{
-			final text = grpTexts.members[i];
 			text.alpha = 0.6;
 			if (text.ID == curSelected)
 				text.alpha = 1;
@@ -357,9 +355,8 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 	function reloadCheckboxes()
 	{
-		for (i in 0...checkboxGroup.members.length)
+		for (checkbox in checkboxGroup)
 		{
-			final checkbox = checkboxGroup.members[i];
 			checkbox.daValue = (optionsArray[checkbox.ID].getValue() == true);
 		}
 	}

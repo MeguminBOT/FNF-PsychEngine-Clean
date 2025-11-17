@@ -618,9 +618,8 @@ class CustomInterp extends crowplexus.hscript.Interp
 
 	override function fcall(o:Dynamic, funcToRun:String, args:Array<Dynamic>):Dynamic
 	{
-		for (i in 0...usings.length)
+		for (_using in usings)
 		{
-			final _using = usings[i];
 			var v = _using.call(o, funcToRun, args);
 			if (v != null)
 				return v;

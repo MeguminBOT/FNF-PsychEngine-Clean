@@ -52,9 +52,8 @@ class AchievementsMenuState extends MusicBeatState
 		grpOptions.scrollFactor.x = 0;
 
 		options.sort(sortByID);
-		for (i in 0...options.length)
+		for (option in options)
 		{
-			final option = options[i];
 			var hasAntialias:Bool = ClientPrefs.data.antialiasing;
 			var graphic = null;
 			if (option.unlocked)
@@ -68,11 +67,13 @@ class AchievementsMenuState extends MusicBeatState
 				}
 				else
 					graphic = Paths.image(image);
+
 				if (graphic == null)
 					graphic = Paths.image('unknownMod');
 			}
 			else
 				graphic = Paths.image('achievements/lockedachievement');
+
 			var spr:FlxSprite = new FlxSprite(0, Math.floor(grpOptions.members.length / MAX_PER_ROW) * 180).loadGraphic(graphic);
 			spr.scrollFactor.x = 0;
 			spr.screenCenter(X);

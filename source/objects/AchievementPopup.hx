@@ -175,9 +175,8 @@ class AchievementPopup extends openfl.display.Sprite
 
 	function deleteClonedBitmaps()
 	{
-		for (i in 0...bitmaps.length)
+		for (clonedBitmap in bitmaps)
 		{
-			final clonedBitmap = bitmaps[i];
 			if (clonedBitmap != null)
 			{
 				clonedBitmap.dispose();

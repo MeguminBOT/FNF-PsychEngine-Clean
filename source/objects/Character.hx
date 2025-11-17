@@ -202,14 +202,14 @@ class Character extends FlxSprite
 		animationsArray = json.animations;
 		if (animationsArray != null && animationsArray.length > 0)
 		{
-			for (i in 0...animationsArray.length)
+			for (anim in animationsArray)
 			{
-				final anim = animationsArray[i];
 				var animAnim:String = '' + anim.anim;
 				var animName:String = '' + anim.name;
 				var animFps:Int = anim.fps;
 				var animLoop:Bool = !!anim.loop; // Bruh
 				var animIndices:Array<Int> = anim.indices;
+
 				if (!isAnimateAtlas)
 				{
 					if (animIndices != null && animIndices.length > 0)
@@ -226,6 +226,7 @@ class Character extends FlxSprite
 						atlas.anim.addBySymbol(animAnim, animName, animFps, animLoop);
 				}
 				#end
+
 				if (anim.offsets != null && anim.offsets.length > 1)
 					addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
 				else

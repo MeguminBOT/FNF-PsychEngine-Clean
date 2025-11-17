@@ -371,9 +371,8 @@ class FunkinLua
 			if (luaPath != null)
 			{
 				var foundAny:Bool = false;
-				for (i in 0...game.luaArray.length)
+				for (luaInstance in game.luaArray)
 				{
-					final luaInstance = game.luaArray[i];
 					if (luaInstance.scriptName == luaPath)
 					{
 						trace('Closing lua script $luaPath');
@@ -396,9 +395,8 @@ class FunkinLua
 			if (scriptPath != null)
 			{
 				var foundAny:Bool = false;
-				for (i in 0...game.hscriptArray.length)
+				for (script in game.hscriptArray)
 				{
-					final script = game.hscriptArray[i];
 					if (script.origin == scriptPath)
 					{
 						trace('Closing hscript $scriptPath');
@@ -2197,9 +2195,8 @@ class FunkinLua
 			foldersToCheck.insert(0, Paths.mods(mod + '/shaders/'));
 		#end
 
-		for (i in 0...foldersToCheck.length)
+		for (folder in foldersToCheck)
 		{
-			final folder = foldersToCheck[i];
 			if (FileSystem.exists(folder))
 			{
 				var frag:String = folder + name + '.frag';
@@ -2212,6 +2209,7 @@ class FunkinLua
 				}
 				else
 					frag = null;
+
 				if (FileSystem.exists(vert))
 				{
 					vert = File.getContent(vert);
@@ -2219,6 +2217,7 @@ class FunkinLua
 				}
 				else
 					vert = null;
+
 				if (found)
 				{
 					runtimeShaders.set(name, [frag, vert]);

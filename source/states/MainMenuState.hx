@@ -334,12 +334,11 @@ class MainMenuState extends MusicBeatState
 					}
 				});
 
-				final menuItemsMembers = menuItems.members;
-				for (i in 0...menuItemsMembers.length)
+				for (memb in menuItems)
 				{
-					final memb = menuItemsMembers[i];
 					if (memb == item)
 						continue;
+
 					FlxTween.tween(memb, {alpha: 0}, 0.4, {ease: FlxEase.quadOut});
 				}
 			}
@@ -363,10 +362,8 @@ class MainMenuState extends MusicBeatState
 		curSelected = FlxMath.wrap(curSelected + change, 0, optionShit.length - 1);
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 
-		final menuItemsMembers = menuItems.members;
-		for (i in 0...menuItemsMembers.length)
+		for (item in menuItems)
 		{
-			final item = menuItemsMembers[i];
 			item.animation.play('idle');
 			item.centerOffsets();
 		}

@@ -781,9 +781,8 @@ class PlayState extends MusicBeatState
 
 		if (doPush)
 		{
-			for (i in 0...luaArray.length)
+			for (script in luaArray)
 			{
-				final script = luaArray[i];
 				if (script.scriptName == luaFile)
 				{
 					doPush = false;
@@ -1419,9 +1418,8 @@ class PlayState extends MusicBeatState
 		var ghostNotesCaught:Int = 0;
 		var daBpm:Float = Conductor.bpm;
 
-		for (i in 0...sectionsData.length)
+		for (section in sectionsData)
 		{
-			final section = sectionsData[i];
 			if (section.changeBPM != null && section.changeBPM && section.bpm != null && daBpm != section.bpm)
 				daBpm = section.bpm;
 
@@ -1440,16 +1438,14 @@ class PlayState extends MusicBeatState
 				if (i != 0)
 				{
 					// CLEAR ANY POSSIBLE GHOST NOTES
-					for (i in 0...unspawnNotes.length)
+					for (evilNote in unspawnNotes)
 					{
-						final evilNote = unspawnNotes[i];
 						var matches:Bool = (noteColumn == evilNote.noteData && gottaHitNote == evilNote.mustPress && evilNote.noteType == noteType);
 						if (matches && Math.abs(spawnTime - evilNote.strumTime) < flixel.math.FlxMath.EPSILON)
 						{
 							if (evilNote.tail.length > 0)
-								for (i in 0...evilNote.tail.length)
+								for (tail in evilNote.tail)
 								{
-									final tail = evilNote.tail[i];
 									tail.destroy();
 									unspawnNotes.remove(tail);
 								}
@@ -1773,9 +1769,8 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition = FlxG.sound.music.time + Conductor.offset;
 
 		var checkVocals = [vocals, opponentVocals];
-		for (i in 0...checkVocals.length)
+		for (voc in checkVocals)
 		{
-			final voc = checkVocals[i];
 			if (FlxG.sound.music.time < vocals.length)
 			{
 				voc.time = FlxG.sound.music.time;
@@ -2549,6 +2544,7 @@ class PlayState extends MusicBeatState
 		camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
 		camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
 		camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
+		tweenCamIn();
 	}
 
 	var cameraTwn:FlxTween;
@@ -2562,6 +2558,7 @@ class PlayState extends MusicBeatState
 			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0] + opponentCameraOffset[0];
 			camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
+			tweenCamIn();
 		}
 		else
 		{
@@ -2608,9 +2605,8 @@ class PlayState extends MusicBeatState
 				if (daNote.strumTime < songLength - Conductor.safeZoneOffset)
 					health -= 0.05 * healthLoss;
 			});
-			for (i in 0...unspawnNotes.length)
+			for (daNote in unspawnNotes)
 			{
-				final daNote = unspawnNotes[i];
 				if (daNote != null && daNote.strumTime < songLength - Conductor.safeZoneOffset)
 					health -= 0.05 * healthLoss;
 			}
@@ -2762,16 +2758,16 @@ class PlayState extends MusicBeatState
 
 		if (!ClientPrefs.data.comboStacking && comboGroup.members.length > 0)
 		{
-			final comboGroupMembers = comboGroup.members;
-			for (i in 0...comboGroupMembers.length)
+			for (spr in comboGroup)
 			{
-				final spr = comboGroupMembers[i];
 				if (spr == null)
 					continue;
+
 				comboGroup.remove(spr);
 				spr.destroy();
 			}
 		}
+
 		var placement:Float = FlxG.width * 0.35;
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
@@ -3050,9 +3046,8 @@ class PlayState extends MusicBeatState
 		var holdArray:Array<Bool> = [];
 		var pressArray:Array<Bool> = [];
 		var releaseArray:Array<Bool> = [];
-		for (i in 0...keysArray.length)
+		for (key in keysArray)
 		{
-			final key = keysArray[i];
 			holdArray.push(controls.pressed(key));
 			pressArray.push(controls.justPressed(key));
 			releaseArray.push(controls.justReleased(key));
@@ -3068,17 +3063,17 @@ class PlayState extends MusicBeatState
 		{
 			if (notes.length > 0)
 			{
-				final notesMembers = notes.members;
-				for (i in 0...notesMembers.length)
-				{
-					final n = notesMembers[i];
-					// I can't do a filter here, that's kinda awesome
+				for (n in notes)
+				{ // I can't do a filter here, that's kinda awesome
 					var canHit:Bool = (n != null && !strumsBlocked[n.noteData] && n.canBeHit && n.mustPress && !n.tooLate && !n.wasGoodHit && !n.blockHit);
+
 					if (guitarHeroSustains)
 						canHit = canHit && n.parent != null && n.parent.wasGoodHit;
+
 					if (canHit && n.isSustainNote)
 					{
 						var released:Bool = !holdArray[n.noteData];
+
 						if (!released)
 							goodNoteHit(n);
 					}
@@ -3150,9 +3145,8 @@ class PlayState extends MusicBeatState
 			if (note.tail.length > 0)
 			{
 				note.alpha = 0.35;
-				for (i in 0...note.tail.length)
+				for (childNote in note.tail)
 				{
-					final childNote = note.tail[i];
 					childNote.alpha = note.alpha;
 					childNote.missed = true;
 					childNote.canBeHit = false;
@@ -3446,9 +3440,8 @@ class PlayState extends MusicBeatState
 		}
 
 		#if LUA_ALLOWED
-		for (i in 0...luaArray.length)
+		for (lua in luaArray)
 		{
-			final lua = luaArray[i];
 			lua.call('onDestroy', []);
 			lua.stop();
 		}
@@ -3688,16 +3681,17 @@ class PlayState extends MusicBeatState
 			excludeValues = [LuaUtils.Function_Continue];
 
 		var arr:Array<FunkinLua> = [];
-		for (i in 0...luaArray.length)
+		for (script in luaArray)
 		{
-			final script = luaArray[i];
 			if (script.closed)
 			{
 				arr.push(script);
 				continue;
 			}
+
 			if (exclusions.contains(script.scriptName))
 				continue;
+
 			var myValue:Dynamic = script.call(funcToCall, args);
 			if ((myValue == LuaUtils.Function_StopLua || myValue == LuaUtils.Function_StopAll)
 				&& !excludeValues.contains(myValue)
@@ -3706,8 +3700,10 @@ class PlayState extends MusicBeatState
 				returnVal = myValue;
 				break;
 			}
+
 			if (myValue != null && !excludeValues.contains(myValue))
 				returnVal = myValue;
+
 			if (script.closed)
 				arr.push(script);
 		}
@@ -3735,16 +3731,17 @@ class PlayState extends MusicBeatState
 		if (len < 1)
 			return returnVal;
 
-		for (i in 0...hscriptArray.length)
+		for (script in hscriptArray)
 		{
-			final script = hscriptArray[i];
 			@:privateAccess
 			if (script == null || !script.exists(funcToCall) || exclusions.contains(script.origin))
 				continue;
+
 			var callValue = script.call(funcToCall, args);
 			if (callValue != null)
 			{
 				var myValue:Dynamic = callValue.returnValue;
+
 				if ((myValue == LuaUtils.Function_StopHScript || myValue == LuaUtils.Function_StopAll)
 					&& !excludeValues.contains(myValue)
 					&& !ignoreStops)
@@ -3752,6 +3749,7 @@ class PlayState extends MusicBeatState
 					returnVal = myValue;
 					break;
 				}
+
 				if (myValue != null && !excludeValues.contains(myValue))
 					returnVal = myValue;
 			}
@@ -3774,11 +3772,11 @@ class PlayState extends MusicBeatState
 		#if LUA_ALLOWED
 		if (exclusions == null)
 			exclusions = [];
-		for (i in 0...luaArray.length)
+		for (script in luaArray)
 		{
-			final script = luaArray[i];
 			if (exclusions.contains(script.scriptName))
 				continue;
+
 			script.set(variable, arg);
 		}
 		#end
@@ -3789,11 +3787,11 @@ class PlayState extends MusicBeatState
 		#if HSCRIPT_ALLOWED
 		if (exclusions == null)
 			exclusions = [];
-		for (i in 0...hscriptArray.length)
+		for (script in hscriptArray)
 		{
-			final script = hscriptArray[i];
 			if (exclusions.contains(script.origin))
 				continue;
+
 			script.set(variable, arg);
 		}
 		#end
@@ -3869,11 +3867,11 @@ class PlayState extends MusicBeatState
 		if (cpuControlled)
 			return;
 
-		for (i in 0...achievesToCheck.length)
+		for (name in achievesToCheck)
 		{
-			final name = achievesToCheck[i];
 			if (!Achievements.exists(name))
 				continue;
+
 			var unlock:Bool = false;
 			if (name != WeekData.getWeekFileName() + '_nomiss') // common achievements
 			{
@@ -3881,14 +3879,19 @@ class PlayState extends MusicBeatState
 				{
 					case 'ur_bad':
 						unlock = (ratingPercent < 0.2 && !practiceMode);
+
 					case 'ur_good':
 						unlock = (ratingPercent >= 1 && !usedPractice);
+
 					case 'oversinging':
 						unlock = (boyfriend.holdTimer >= 10 && !usedPractice);
+
 					case 'hype':
 						unlock = (!boyfriendIdled && !usedPractice);
+
 					case 'two_keys':
 						unlock = (!usedPractice && keysPressed.length <= 2);
+
 					case 'toastie':
 						unlock = (!ClientPrefs.data.cacheOnGPU && !ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing);
 				}
@@ -3903,6 +3906,7 @@ class PlayState extends MusicBeatState
 					&& !usedPractice)
 					unlock = true;
 			}
+
 			if (unlock)
 				Achievements.unlock(name);
 		}

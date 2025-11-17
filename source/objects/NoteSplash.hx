@@ -91,9 +91,8 @@ class NoteSplash extends FlxSprite
 		if (configs.exists(path))
 		{
 			this.config = configs.get(path);
-			for (key in this.config.animations.keys())
+			for (anim in this.config.animations)
 			{
-				final anim = this.config.animations.get(key);
 				if (anim.noteData % 4 == 0)
 					maxAnims++;
 			}
@@ -171,9 +170,8 @@ class NoteSplash extends FlxSprite
 		var failedToFind:Bool = false;
 		while (true)
 		{
-			for (i in 0...Note.colArray.length)
+			for (v in Note.colArray)
 			{
-				final v = Note.colArray[i];
 				if (!checkForAnim('$anim $v ${maxAnims + 1}'))
 				{
 					failedToFind = true;
@@ -449,9 +447,8 @@ class NoteSplash extends FlxSprite
 		animation.clearAnimations();
 		noteDataMap.clear();
 
-		for (key in value.animations.keys())
+		for (i in value.animations)
 		{
-			final i = value.animations.get(key);
 			var key:String = i.name;
 			if (i.prefix.length > 0 && key != null && key.length > 0)
 			{
@@ -459,6 +456,7 @@ class NoteSplash extends FlxSprite
 					animation.addByIndices(key, i.prefix, i.indices, "", i.fps[1], false);
 				else
 					animation.addByPrefix(key, i.prefix, i.fps[1], false);
+
 				noteDataMap.set(i.noteData, key);
 			}
 		}

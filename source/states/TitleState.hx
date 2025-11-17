@@ -304,9 +304,8 @@ class TitleState extends MusicBeatState
 		#end
 		var swagGoodArray:Array<Array<String>> = [];
 
-		for (i in 0...firstArray.length)
+		for (i in firstArray)
 		{
-			final i = firstArray[i];
 			swagGoodArray.push(i.split('--'));
 		}
 
@@ -329,9 +328,8 @@ class TitleState extends MusicBeatState
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if mobile
-		for (i in 0...FlxG.touches.list.length)
+		for (touch in FlxG.touches.list)
 		{
-			final touch = FlxG.touches.list[i];
 			if (touch.justPressed)
 			{
 				pressedEnter = true;
@@ -408,9 +406,8 @@ class TitleState extends MusicBeatState
 						easterEggKeysBuffer = easterEggKeysBuffer.substring(1);
 					// trace('Test! Allowed Key pressed!!! Buffer: ' + easterEggKeysBuffer);
 
-					for (i in 0...easterEggKeys.length)
+					for (wordRaw in easterEggKeys)
 					{
-						final wordRaw = easterEggKeys[i];
 						var word:String = wordRaw.toUpperCase(); // just for being sure you're doing it right
 						if (easterEggKeysBuffer.contains(word))
 						{
@@ -420,12 +417,15 @@ class TitleState extends MusicBeatState
 							else
 								FlxG.save.data.psychDevsEasterEgg = word;
 							FlxG.save.flush();
+
 							FlxG.sound.play(Paths.sound('secret'));
+
 							var black:FlxSprite = new FlxSprite(0, 0).makeGraphic(1, 1, FlxColor.BLACK);
 							black.scale.set(FlxG.width, FlxG.height);
 							black.updateHitbox();
 							black.alpha = 0;
 							add(black);
+
 							FlxTween.tween(black, {alpha: 1}, 1, {
 								onComplete: function(twn:FlxTween)
 								{

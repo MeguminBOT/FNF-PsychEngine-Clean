@@ -130,9 +130,8 @@ class WeekData
 			if (FileSystem.exists(directory))
 			{
 				var listOfWeeks:Array<String> = CoolUtil.coolTextFile(directory + 'weekList.txt');
-				for (i in 0...listOfWeeks.length)
+				for (daWeek in listOfWeeks)
 				{
-					final daWeek = listOfWeeks[i];
 					var path:String = directory + daWeek + '.json';
 					if (FileSystem.exists(path))
 					{

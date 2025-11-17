@@ -198,9 +198,8 @@ class Main extends Sprite
 		{
 			if (FlxG.cameras != null)
 			{
-				for (i in 0...FlxG.cameras.list.length)
+				for (cam in FlxG.cameras.list)
 				{
-					final cam = FlxG.cameras.list[i];
 					if (cam != null && cam.filters != null)
 						resetSpriteCache(cam.flashSprite);
 				}
@@ -234,9 +233,8 @@ class Main extends Sprite
 
 		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
 
-		for (i in 0...callStack.length)
+		for (stackItem in callStack)
 		{
-			final stackItem = callStack[i];
 			switch (stackItem)
 			{
 				case FilePos(s, file, line, column):

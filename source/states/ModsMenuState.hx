@@ -118,9 +118,8 @@ class ModsMenuState extends MusicBeatState
 		buttonEnableAll = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, Language.getPhrase('enable_all_button', 'ENABLE ALL'), function()
 		{
 			buttonEnableAll.ignoreCheck = false;
-			for (i in 0...modsGroup.members.length)
+			for (mod in modsGroup.members)
 			{
-				final mod = modsGroup.members[i];
 				if (modsList.disabled.contains(mod.folder))
 				{
 					modsList.disabled.remove(mod.folder);
@@ -141,9 +140,8 @@ class ModsMenuState extends MusicBeatState
 		buttonDisableAll = new MenuButton(buttonX, myY, buttonWidth, buttonHeight, Language.getPhrase('disable_all_button', 'DISABLE ALL'), function()
 		{
 			buttonDisableAll.ignoreCheck = false;
-			for (i in 0...modsGroup.members.length)
+			for (mod in modsGroup.members)
 			{
-				final mod = modsGroup.members[i];
 				if (modsList.enabled.contains(mod.folder))
 				{
 					modsList.enabled.remove(mod.folder);
@@ -829,13 +827,14 @@ class ModsMenuState extends MusicBeatState
 	function saveTxt()
 	{
 		var fileStr:String = '';
-		for (i in 0...modsList.all.length)
+		for (mod in modsList.all)
 		{
-			final mod = modsList.all[i];
 			if (mod.trim().length < 1)
 				continue;
+
 			if (fileStr.length > 0)
 				fileStr += '\n';
+
 			var on = '1';
 			if (modsList.disabled.contains(mod))
 				on = '0';
