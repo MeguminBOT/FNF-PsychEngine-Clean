@@ -24,6 +24,10 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'ghostTapping', BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Show Hit Error Bar', "If checked, displays a timing visualization bar\nshowing how early/late you hit notes (similar to osu!).",
+			'showHitErrorBar', BOOL);
+		addOption(option);
+
 		var option:Option = new Option('Auto Pause', "If checked, the game automatically pauses if the screen isn't on focus.", 'autoPause', BOOL);
 		addOption(option);
 		option.onChange = onChangeAutoPause;
