@@ -171,6 +171,7 @@ class PlayState extends MusicBeatState
 
 	public var healthBar:Bar;
 	public var timeBar:Bar;
+	public var hitErrorBar:HitErrorBar;
 
 	var songPercent:Float = 0;
 
@@ -488,6 +489,14 @@ class PlayState extends MusicBeatState
 		timeBar.visible = showTime;
 		uiGroup.add(timeBar);
 		uiGroup.add(timeTxt);
+
+		if (ClientPrefs.data.showHitErrorBar && !ClientPrefs.data.hideHud) {
+			hitErrorBar = new HitErrorBar();
+			hitErrorBar.x = (FlxG.width - 400) * 0.5; // Centered horizontally (400 = BAR_WIDTH)
+			hitErrorBar.y = FlxG.height - 30; // Bottom of screen
+			hitErrorBar.scrollFactor.set();
+			uiGroup.add(hitErrorBar);
+		}
 
 		noteGroup.add(strumLineNotes);
 
@@ -2755,6 +2764,12 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset);
 		vocals.volume = 1;
+
+		if (hitErrorBar != null && !cpuControlled) {
+			var timeOffset:Float = (note.strumTime - Conductor.songPosition - ClientPrefs.data.ratingOffset);
+			var daRating:Rating = Conductor.judgeNote(ratingsData, noteDiff / playbackRate);
+			hitErrorBar.addHit(timeOffset, daRating.name);
+		}
 
 		if (!ClientPrefs.data.comboStacking && comboGroup.members.length > 0)
 		{
