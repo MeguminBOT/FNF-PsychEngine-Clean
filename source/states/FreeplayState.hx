@@ -239,9 +239,18 @@ class FreeplayState extends ScriptableState {
 	public function switchToPlayState() {
 		persistentUpdate = false;
 
+		// Get current selection from script
+		var scriptSelection = callOnScripts('getCurrentSelection');
+		if (scriptSelection != null)
+			curSelected = scriptSelection;
+
 		var curDiff = callOnScripts('getCurrentDifficulty');
 		if (curDiff == null)
 			curDiff = 0;
+
+		// Set mod directory and week for selected song
+		Mods.currentModDirectory = songs[curSelected].folder;
+		PlayState.storyWeek = songs[curSelected].week;
 
 		var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
 		var poop:String = Highscore.formatSong(songLowercase, curDiff);

@@ -267,7 +267,15 @@ function stopPreview() {
 }
 
 function enterSong() {
-	game.switchToPlayState(songs[curSelected].songName, curDifficulty);
+	// Ensure mod directory is set for selected song
+	Mods.currentModDirectory = songs[curSelected].folder;
+	PlayState.storyWeek = songs[curSelected].week;
+	
+	game.switchToPlayState();
+}
+
+function getCurrentSelection() {
+	return curSelected;
 }
 
 function getCurrentDifficulty() {
